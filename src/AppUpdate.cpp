@@ -1,52 +1,55 @@
+#include <iostream>
+
 #include "App.hpp"
 #include "Util/Input.hpp"
 
 void App::Update() {
 
-    auto UP = Util::Keycode::UP;
-    auto DOWN = Util::Keycode::DOWN;
-    auto RIGHT = Util::Keycode::RIGHT;
-    auto LEFT = Util::Keycode::LEFT;
+    auto UP = Util::Input::IsKeyPressed(Util::Keycode::UP);
+    auto DOWN = Util::Input::IsKeyPressed(Util::Keycode::DOWN);
+    auto RIGHT = Util::Input::IsKeyPressed(Util::Keycode::RIGHT);
+    auto LEFT = Util::Input::IsKeyPressed(Util::Keycode::LEFT);
 
+    auto NORMAL = Util::Input::IsKeyDown(Util::Keycode::NUM_1);
+    auto DEAD = Util::Input::IsKeyDown(Util::Keycode::NUM_2);
+    auto VULNERABLE = Util::Input::IsKeyDown(Util::Keycode::NUM_3);
 
-    if ((Util::Input::IsKeyPressed(UP) && Util::Input::IsKeyPressed(Util::Keycode::B)) || Util::Input::IfExit()) blinky->MoveUp();
-    if ((Util::Input::IsKeyPressed(DOWN) && Util::Input::IsKeyPressed(Util::Keycode::B)) || Util::Input::IfExit()) blinky->MoveDown();
-    if ((Util::Input::IsKeyPressed(RIGHT) && Util::Input::IsKeyPressed(Util::Keycode::B)) || Util::Input::IfExit()) blinky->MoveRight();
-    if ((Util::Input::IsKeyPressed(LEFT) && Util::Input::IsKeyPressed(Util::Keycode::B)) || Util::Input::IfExit()) blinky->MoveLeft();
+    auto BLINKY = Util::Input::IsKeyPressed(Util::Keycode::B);
+    auto PINKY = Util::Input::IsKeyPressed(Util::Keycode::P);
+    auto INKY = Util::Input::IsKeyPressed(Util::Keycode::I);
+    auto CLYDE = Util::Input::IsKeyPressed(Util::Keycode::C);
 
-    if ((Util::Input::IsKeyPressed(UP) && Util::Input::IsKeyPressed(Util::Keycode::P)) || Util::Input::IfExit()) pinky->MoveUp();
-    if ((Util::Input::IsKeyPressed(DOWN) && Util::Input::IsKeyPressed(Util::Keycode::P)) || Util::Input::IfExit()) pinky->MoveDown();
-    if ((Util::Input::IsKeyPressed(RIGHT) && Util::Input::IsKeyPressed(Util::Keycode::P)) || Util::Input::IfExit()) pinky->MoveRight();
-    if ((Util::Input::IsKeyPressed(LEFT) && Util::Input::IsKeyPressed(Util::Keycode::P)) || Util::Input::IfExit()) pinky->MoveLeft();
+    if (BLINKY && NORMAL) blinky->SetState(normalBlinky);
+    if (BLINKY && DEAD) blinky->SetState(deadGhost);
+    if (BLINKY && VULNERABLE) blinky->SetState(vulnerableGhost);
+    if (BLINKY && UP) blinky->MoveUp();
+    if (BLINKY && DOWN) blinky->MoveDown();
+    if (BLINKY && RIGHT) blinky->MoveRight();
+    if (BLINKY && LEFT) blinky->MoveLeft();
 
-    if ((Util::Input::IsKeyPressed(UP) && Util::Input::IsKeyPressed(Util::Keycode::I)) || Util::Input::IfExit()) inky->MoveUp();
-    if ((Util::Input::IsKeyPressed(DOWN) && Util::Input::IsKeyPressed(Util::Keycode::I)) || Util::Input::IfExit()) inky->MoveDown();
-    if ((Util::Input::IsKeyPressed(RIGHT) && Util::Input::IsKeyPressed(Util::Keycode::I)) || Util::Input::IfExit()) inky->MoveRight();
-    if ((Util::Input::IsKeyPressed(LEFT) && Util::Input::IsKeyPressed(Util::Keycode::I)) || Util::Input::IfExit()) inky->MoveLeft();
+    if (PINKY && NORMAL) pinky->SetState(normalPinky);
+    if (PINKY && DEAD) pinky->SetState(deadGhost);
+    if (PINKY && VULNERABLE) pinky->SetState(vulnerableGhost);
+    if (PINKY && UP) pinky->MoveUp();
+    if (PINKY && DOWN) pinky->MoveDown();
+    if (PINKY && RIGHT) pinky->MoveRight();
+    if (PINKY && LEFT) pinky->MoveLeft();
 
-    if ((Util::Input::IsKeyPressed(UP) && Util::Input::IsKeyPressed(Util::Keycode::C)) || Util::Input::IfExit()) clyde->MoveUp();
-    if ((Util::Input::IsKeyPressed(DOWN) && Util::Input::IsKeyPressed(Util::Keycode::C)) || Util::Input::IfExit()) clyde->MoveDown();
-    if ((Util::Input::IsKeyPressed(RIGHT) && Util::Input::IsKeyPressed(Util::Keycode::C)) || Util::Input::IfExit()) clyde->MoveRight();
-    if ((Util::Input::IsKeyPressed(LEFT) && Util::Input::IsKeyPressed(Util::Keycode::C)) || Util::Input::IfExit()) clyde->MoveLeft();
+    if (INKY && NORMAL) inky->SetState(normalInky);
+    if (INKY && DEAD) inky->SetState(deadGhost);
+    if (INKY && VULNERABLE) inky->SetState(vulnerableGhost);
+    if (INKY && UP) inky->MoveUp();
+    if (INKY && DOWN) inky->MoveDown();
+    if (INKY && RIGHT) inky->MoveRight();
+    if (INKY && LEFT) inky->MoveLeft();
 
-    if ((Util::Input::IsKeyPressed(UP) && Util::Input::IsKeyPressed(Util::Keycode::A)) || Util::Input::IfExit()) pacman->MoveUp();
-    if ((Util::Input::IsKeyPressed(DOWN) && Util::Input::IsKeyPressed(Util::Keycode::A)) || Util::Input::IfExit()) pacman->MoveDown();
-    if ((Util::Input::IsKeyPressed(RIGHT) && Util::Input::IsKeyPressed(Util::Keycode::A)) || Util::Input::IfExit()) pacman->MoveRight();
-    if ((Util::Input::IsKeyPressed(LEFT) && Util::Input::IsKeyPressed(Util::Keycode::A)) || Util::Input::IfExit()) pacman->MoveLeft();
-
-
-    if ((Util::Input::IsKeyPressed(UP) && Util::Input::IsKeyPressed(Util::Keycode::D)) || Util::Input::IfExit()) ghost_dead->MoveUp();
-    if ((Util::Input::IsKeyPressed(DOWN) && Util::Input::IsKeyPressed(Util::Keycode::D)) || Util::Input::IfExit()) ghost_dead->MoveDown();
-    if ((Util::Input::IsKeyPressed(RIGHT) && Util::Input::IsKeyPressed(Util::Keycode::D)) || Util::Input::IfExit()) ghost_dead->MoveRight();
-    if ((Util::Input::IsKeyPressed(LEFT) && Util::Input::IsKeyPressed(Util::Keycode::D)) || Util::Input::IfExit()) ghost_dead->MoveLeft();
-
-    if (Util::Input::IsKeyPressed(Util::Keycode::S) || Util::Input::IfExit()) cherry->SetVisible(false);
-    if (Util::Input::IsKeyUp(Util::Keycode::S) || Util::Input::IfExit()) cherry->SetVisible(true);
-
-    if ((Util::Input::IsKeyPressed(UP) && Util::Input::IsKeyPressed(Util::Keycode::T)) || Util::Input::IfExit()) vulnerable_ghost->MoveUp();
-    if ((Util::Input::IsKeyPressed(DOWN) && Util::Input::IsKeyPressed(Util::Keycode::T)) || Util::Input::IfExit()) vulnerable_ghost->MoveDown();
-    if ((Util::Input::IsKeyPressed(RIGHT) && Util::Input::IsKeyPressed(Util::Keycode::T)) || Util::Input::IfExit()) vulnerable_ghost->MoveRight();
-    if ((Util::Input::IsKeyPressed(LEFT) && Util::Input::IsKeyPressed(Util::Keycode::T )) || Util::Input::IfExit()) vulnerable_ghost->MoveLeft();
+    if (CLYDE && NORMAL) clyde->SetState(normalClyde);
+    if (CLYDE && DEAD) clyde->SetState(deadGhost);
+    if (CLYDE && VULNERABLE) clyde->SetState(vulnerableGhost);
+    if (CLYDE && UP) clyde->MoveUp();
+    if (CLYDE && DOWN) clyde->MoveDown();
+    if (CLYDE && RIGHT) clyde->MoveRight();
+    if (CLYDE && LEFT) clyde->MoveLeft();
 
     /*
      * Do not touch the code below as they serve the purpose for
@@ -57,5 +60,6 @@ void App::Update() {
         m_CurrentState = State::END;
     }
 
-    m_Root.Update();
+    root.Update();
 }
+
