@@ -32,7 +32,7 @@ public:
     }
 
     void SetLeftImages(const std::vector<std::string> &images) {
-        this->ghostState->GetLeftImages(images);
+        this->ghostState->SetLeftImages(images);
     }
 
     void Draw() {

@@ -21,7 +21,7 @@ public:
         RIGHT = std::make_shared<Util::Animation>(AnimationPaths, true, 300, true, 0);
     }
 
-    void GetLeftImages(const std::vector<std::string> &AnimationPaths) {
+    void SetLeftImages(const std::vector<std::string> &AnimationPaths) {
         LEFT = std::make_shared<Util::Animation>(AnimationPaths, true, 300, true, 0);
     }
 
