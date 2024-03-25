@@ -19,6 +19,8 @@ void App::Update() {
     auto INKY = Util::Input::IsKeyPressed(Util::Keycode::I);
     auto CLYDE = Util::Input::IsKeyPressed(Util::Keycode::C);
 
+    auto PACMAN = Util::Input::IsKeyPressed(Util::Keycode::A);
+
     if (BLINKY && NORMAL) blinky->SetState(normalBlinky);
     if (BLINKY && DEAD) blinky->SetState(deadGhost);
     if (BLINKY && VULNERABLE) blinky->SetState(vulnerableGhost);
@@ -50,6 +52,18 @@ void App::Update() {
     if (CLYDE && DOWN) clyde->MoveDown();
     if (CLYDE && RIGHT) clyde->MoveRight();
     if (CLYDE && LEFT) clyde->MoveLeft();
+
+    if (PACMAN && NORMAL) pacman->Start();
+    if (PACMAN && DEAD) pacman->Dead();
+    if (PACMAN && UP) pacman->MoveUp();
+    if (PACMAN && DOWN) pacman->MoveDown();
+    if (PACMAN && RIGHT) pacman->MoveRight();
+    if (PACMAN && LEFT) pacman->MoveLeft();
+
+    if (Util::Input::IsKeyDown(Util::Keycode::S)) {
+        if (!cherry->GetVisibility()) cherry->SetVisible(true);
+        else cherry->SetVisible(false);
+    }
 
     /*
      * Do not touch the code below as they serve the purpose for

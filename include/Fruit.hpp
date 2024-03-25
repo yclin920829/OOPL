@@ -12,14 +12,6 @@ public:
         ResetPosition();
     };
 
-    Fruit(const Fruit&) = delete;
-
-    Fruit(Fruit&&) = delete;
-
-    Fruit& operator=(const Fruit&) = delete;
-
-    Fruit& operator=(Fruit&&) = delete;
-
     [[nodiscard]] const std::string& GetImagePath() const { return m_ImagePath; }
 
     [[nodiscard]] const glm::vec2& GetPosition() const { return m_Transform.translation; }

@@ -2,6 +2,7 @@
 #define REPLACE_WITH_YOUR_PROJECT_NAME_GHOSTSTATE_HPP
 
 #include "Util/Animation.hpp"
+#include "Ghost.hpp"
 
 class GhostState {
 public:

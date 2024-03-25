@@ -5,7 +5,6 @@
 #include "Fruit.hpp"
 #include "Pacman.hpp"
 #include "Util/Root.hpp"
-#include "PacmanDead.hpp"
 #include "ghost/Ghost.hpp"
 #include "ghost/GhostDeadState.hpp"
 #include "ghost/GhostNormalState.hpp"
@@ -48,7 +47,6 @@ private:
     GhostVulnerableState * vulnerableGhost = new GhostVulnerableState();
 
     std::shared_ptr<Pacman> pacman;
-    std::shared_ptr<PacmanDead> pacman_dead;
 
     std::shared_ptr<Fruit> cherry;
 

@@ -21,19 +21,6 @@ void App::Start() {
     root.AddChild(inky);
     root.AddChild(clyde);
 
-    pacman = std::make_shared<Pacman>();
-    pacman->SetUpImages({RESOURCE_DIR"/Image/Character/pacman/pacman_U_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_U_02.png"});
-    pacman->SetDownImages({RESOURCE_DIR"/Image/Character/pacman/pacman_D_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_D_02.png"});
-    pacman->SetRightImages({RESOURCE_DIR"/Image/Character/pacman/pacman_R_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_R_02.png"});
-    pacman->SetLeftImages({RESOURCE_DIR"/Image/Character/pacman/pacman_L_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_L_02.png"});
-
-    pacman->SetDrawble2();
-    pacman->SetZIndex(5);
-    pacman->SetVisible(true);
-    pacman->SetPosition({0.0f, 0.0f});
-    
-    root.AddChild(pacman);
-
     std::vector<std::string> deadImages;
     deadImages.reserve(13);
     for (int i = 0; i < 13; ++i) {
@@ -41,11 +28,18 @@ void App::Start() {
                 RESOURCE_DIR"/Image/Character/Pacman_dead/Pacman_dead" + std::to_string(i + 1) + ".png");
     }
 
-    pacman_dead = std::make_shared<PacmanDead>(deadImages);
-    pacman_dead->SetZIndex(5);
-    pacman_dead->SetVisible(true);
-    pacman_dead->SetPosition({0.0f, -100.0f});
-    pacman->AddChild(pacman_dead);
+    pacman = std::make_shared<Pacman>();
+    pacman->SetUpImages({RESOURCE_DIR"/Image/Character/pacman/pacman_U_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_U_02.png"});
+    pacman->SetDownImages({RESOURCE_DIR"/Image/Character/pacman/pacman_D_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_D_02.png"});
+    pacman->SetRightImages({RESOURCE_DIR"/Image/Character/pacman/pacman_R_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_R_02.png"});
+    pacman->SetLeftImages({RESOURCE_DIR"/Image/Character/pacman/pacman_L_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_L_02.png"});
+    pacman->SetDeadImages(deadImages);
+
+    pacman->SetZIndex(5);
+    pacman->SetVisible(true);
+    pacman->SetPosition({0.0f, 0.0f});
+    pacman->Start();
+    root.AddChild(pacman);
 
     cherry = std::make_shared<Fruit>(RESOURCE_DIR"/Image/Character/Fruit/cherry.png");
     cherry->SetPosition({0.0f, 100.0f});
