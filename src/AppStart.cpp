@@ -58,7 +58,7 @@ void App::Start() {
     }
 
     m_Map = std::make_shared<Map>(m, n, map_by_number);
-    m_Root.AddChild(m_Map);
+    root.AddChild(m_Map);
 
     VulnerableGhostsImages = {
             RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_01.png",
