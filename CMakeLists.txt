@@ -19,6 +19,11 @@ add_executable(${PROJECT_NAME}
     ${SRC_DIR}/main.cpp
     ${SRC_FILES}
     ${HEADER_FILES}
+        src/Map.cpp
+        src/AppStart.cpp
+        include/Block.hpp
+        src/Block.cpp
+        src/AppUpdate.cpp
 )
 
 if(MSVC)
