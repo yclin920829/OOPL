@@ -1,17 +1,15 @@
 #include "App.hpp"
-#include<iostream>
 
 #include "Util/Input.hpp"
 #include "Util/Logger.hpp"
 
 void App::Start() {
     LOG_TRACE("Start");
+
     int m = 28;
     int n = 32;
 
-//    std::cin >> m >> n;
     std::vector<std::vector<int>> map_by_number(n, std::vector<int>(m, 0));
-    // 将提供的数字放入vector中
     std::vector<int> data = {
             5, 1, 1, 1, 1, 1, 1, 1, 1, 14, 13, 1, 1, 1, 1, 14, 13, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 6,
             3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 11, 12, 0, 0, 0, 0, 11, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4,
@@ -59,18 +57,49 @@ void App::Start() {
         }
     }
 
-    //Map map(m, n, map_by_number);
     m_Map = std::make_shared<Map>(m, n, map_by_number);
     m_Root.AddChild(m_Map);
 
+    VulnerableGhostsImages = {
+            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_01.png",
+            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_02.png",
+            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_01.png",
+            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
+    };
 
-    /*pinky->SetZIndex(5);
-    pinky->SetVisible(true);
-    pinky->SetPosition({100.0f, -100.0f});*/
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
-        Util::Input::IfExit()) {
-        m_CurrentState = State::END;
+    blinky = CreateGhost(RESOURCE_DIR, -100.0f, -100.0f, "blinky", normalBlinky);
+    pinky = CreateGhost(RESOURCE_DIR, 100.0f, -100.0f, "pinky", normalPinky);
+    inky = CreateGhost(RESOURCE_DIR, -100.0f, 100.0f, "inky", normalInky);
+    clyde = CreateGhost(RESOURCE_DIR, 100.0f, 100.0f, "clyde", normalClyde);
+    root.AddChild(blinky);
+    root.AddChild(pinky);
+    root.AddChild(inky);
+    root.AddChild(clyde);
+
+    std::vector<std::string> deadImages;
+    deadImages.reserve(13);
+    for (int i = 0; i < 13; ++i) {
+        deadImages.emplace_back(
+                RESOURCE_DIR"/Image/Character/Pacman_dead/Pacman_dead" + std::to_string(i + 1) + ".png");
     }
+
+    pacman = std::make_shared<Pacman>();
+    pacman->SetUpImages({RESOURCE_DIR"/Image/Character/pacman/pacman_U_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_U_02.png"});
+    pacman->SetDownImages({RESOURCE_DIR"/Image/Character/pacman/pacman_D_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_D_02.png"});
+    pacman->SetRightImages({RESOURCE_DIR"/Image/Character/pacman/pacman_R_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_R_02.png"});
+    pacman->SetLeftImages({RESOURCE_DIR"/Image/Character/pacman/pacman_L_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_L_02.png"});
+    pacman->SetDeadImages(deadImages);
+
+    pacman->SetZIndex(5);
+    pacman->SetVisible(true);
+    pacman->SetPosition({0.0f, 0.0f});
+    pacman->Start();
+    root.AddChild(pacman);
+
+    cherry = std::make_shared<Fruit>(RESOURCE_DIR"/Image/Character/Fruit/cherry.png");
+    cherry->SetPosition({0.0f, 100.0f});
+    cherry->SetZIndex(1);
+    root.AddChild(cherry);
 
     m_CurrentState = State::UPDATE;
 }
