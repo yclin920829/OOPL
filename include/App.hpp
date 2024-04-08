@@ -14,8 +14,6 @@
 #include "Map.hpp"
 #include "Block.hpp"
 #include "Util/Text.hpp"
-//#include "PhaseResourceManger.hpp"
-//#include "AnimatedCharacter.hpp"
 
 class App {
 public:
@@ -42,11 +40,8 @@ private:
 
     Util::Root root;
 
-    std::shared_ptr<Map> m_Map;
-    std::shared_ptr<Block> m_Block;
-    bool m_EnterDown = false;
-  
-    
+    std::shared_ptr<Map> map;
+
     std::shared_ptr<Ghost> blinky;
     std::shared_ptr<Ghost> pinky;
     std::shared_ptr<Ghost> inky;

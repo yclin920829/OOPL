@@ -35,25 +35,25 @@ public:
     void MoveUp() {
         SetDrawable(UP);
         auto position = GetPosition();
-        SetPosition({position.x, position.y + 2.5f});
+        SetPosition({position.x, position.y + 16.0f});
     }
 
     void MoveDown() {
         SetDrawable(DOWN);
         auto position = GetPosition();
-        SetPosition({position.x, position.y - 2.5f});
+        SetPosition({position.x, position.y - 16.0f});
     }
 
     void MoveRight() {
         SetDrawable(RIGHT);
         auto position = GetPosition();
-        SetPosition({position.x + 2.5f, position.y});
+        SetPosition({position.x + 16.0f, position.y});
     }
 
     void MoveLeft() {
         SetDrawable(LEFT);
         auto position = GetPosition();
-        SetPosition({position.x - 2.5f, position.y});
+        SetPosition({position.x - 16.0f, position.y});
     }
 
     void Dead() {
