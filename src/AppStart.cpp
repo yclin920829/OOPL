@@ -83,13 +83,14 @@ void App::Start() {
 
     pacman->SetZIndex(5);
     pacman->SetVisible(true);
-    pacman->SetPosition({0.0f, 0.0f});
+    pacman->SetPosition({-0.0f, -88.0f});
     pacman->Start();
     root.AddChild(pacman);
 
     cherry = std::make_shared<Fruit>(RESOURCE_DIR"/Image/Character/Fruit/cherry.png");
     cherry->SetPosition({0.0f, 100.0f});
     cherry->SetZIndex(1);
+    cherry->SetVisible(false);
     root.AddChild(cherry);
 
     m_CurrentState = State::UPDATE;
