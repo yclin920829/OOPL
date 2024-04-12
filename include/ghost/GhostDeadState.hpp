@@ -9,8 +9,8 @@ class GhostDeadState : public GhostState {
 public:
     GhostDeadState() = default;
 
-    void GetState() override {
-        std::cout << "Ghost State: Dead\n";
+    std::string GetState() override {
+        return "Dead";
     }
 };
 

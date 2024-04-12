@@ -5,12 +5,12 @@
 
 #include "GhostState.hpp"
 
-class GhostNormalState : public GhostState{
+class GhostNormalState : public GhostState {
 public:
     GhostNormalState() = default;
 
-    void GetState() override {
-        std::cout << "Ghost State: Normal\n";
+    std::string GetState() override {
+        return "Normal";
     }
 };
 

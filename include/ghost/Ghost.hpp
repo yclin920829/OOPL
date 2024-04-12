@@ -9,8 +9,8 @@ class Ghost : public Util::GameObject {
 public:
     explicit Ghost() = default;
 
-    void GetState() {
-        ghostState->GetState();
+    std::string GetState() {
+        return ghostState->GetState();
     }
 
     void SetState(GhostState *state) {

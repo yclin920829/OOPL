@@ -9,8 +9,8 @@ class GhostVulnerableState : public GhostState {
 public:
     GhostVulnerableState() = default;
 
-    void GetState() override {
-        std::cout << "Ghost State: Vulnerable\n";
+    std::string GetState() override {
+        return "Vulnerable";
     }
 };
 

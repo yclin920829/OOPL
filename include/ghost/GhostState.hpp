@@ -8,7 +8,7 @@ class GhostState {
 public:
     GhostState() = default;
 
-    virtual void GetState() = 0;
+    virtual std::string GetState() = 0;
 
     void SetUpImages(const std::vector<std::string> &AnimationPaths) {
         UP = std::make_shared<Util::Animation>(AnimationPaths, true, 300, true, 0);
