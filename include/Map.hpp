@@ -10,7 +10,7 @@
 
 #include "Util/Animation.hpp"
 #include "Util/GameObject.hpp"
-#include "Util/Root.hpp"
+#include "Util/Renderer.hpp"
 
 class Map : public Util::GameObject {
 public:

@@ -4,13 +4,12 @@
 #include "pch.hpp" // IWYU pragma: export
 #include "Fruit.hpp"
 #include "Pacman.hpp"
-#include "Util/Root.hpp"
 #include "ghost/Ghost.hpp"
 #include "ghost/GhostDeadState.hpp"
 #include "ghost/GhostNormalState.hpp"
 #include "ghost/GhostVulnerableState.hpp"
 
-#include "Util/Root.hpp"
+#include "Util/Renderer.hpp"
 #include "Map.hpp"
 #include "Block.hpp"
 #include "Util/Text.hpp"
@@ -38,7 +37,7 @@ private:
   
     State m_CurrentState = State::START;
 
-    Util::Root root;
+    Util::Renderer root;
 
     std::shared_ptr<Map> map;
 
