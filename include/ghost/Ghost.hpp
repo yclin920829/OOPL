@@ -4,37 +4,58 @@
 #include "GhostState.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Animation.hpp"
+#include "GhostVulnerableState.hpp"
+#include "GhostDeadState.hpp"
+#include "GhostNormalState.hpp"
 
 class Ghost : public Util::GameObject {
 public:
-    explicit Ghost() = default;
+    explicit Ghost(const std::string &name) {
+        normalGhost = new GhostNormalState();
+        deadGhost = new GhostDeadState();
+        vulnerableGhost = new GhostVulnerableState();
+
+        normalGhost->SetUpImages({RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_U_01.png",
+                                  RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_U_02.png"});
+        normalGhost->SetDownImages({RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_D_01.png",
+                                    RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_D_02.png"});
+        normalGhost->SetRightImages({RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_R_01.png",
+                                     RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_R_02.png"});
+        normalGhost->SetLeftImages({RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_L_01.png",
+                                    RESOURCE_DIR"/Image/Character/" + name + "/" + name + "_L_02.png"});
+
+        deadGhost->SetUpImages({RESOURCE_DIR"/Image/Character/Ghost_dead/Ghost_dead_U.png"});
+        deadGhost->SetDownImages({RESOURCE_DIR"/Image/Character/Ghost_dead/Ghost_dead_D.png"});
+        deadGhost->SetRightImages({RESOURCE_DIR"/Image/Character/Ghost_dead/Ghost_dead_R.png"});
+        deadGhost->SetLeftImages({RESOURCE_DIR"/Image/Character/Ghost_dead/Ghost_dead_L.png"});
+
+        vulnerableGhost->SetUpImages(VulnerableGhostsImages);
+        vulnerableGhost->SetDownImages(VulnerableGhostsImages);
+        vulnerableGhost->SetRightImages(VulnerableGhostsImages);
+        vulnerableGhost->SetLeftImages(VulnerableGhostsImages);
+
+        ghostState = normalGhost;
+        SetZIndex(15);
+        SetVisible(true);
+        SetDrawable(ghostState->GetUpImages());
+    };
 
     std::string GetState() {
         return ghostState->GetState();
     }
 
-    void SetState(GhostState *state) {
-        this->ghostState = state;
-        Draw();
+    void Normal() {
+        this->ghostState = normalGhost;
+        SetDrawable(ghostState->GetUpImages());
     }
 
-    void SetUpImages(const std::vector<std::string> &images) {
-        this->ghostState->SetUpImages(images);
+    void Vulnerable() {
+        this->ghostState = vulnerableGhost;
+        SetDrawable(ghostState->GetUpImages());
     }
 
-    void SetDownImages(const std::vector<std::string> &images) {
-        this->ghostState->SetDownImages(images);
-    }
-
-    void SetRightImages(const std::vector<std::string> &images) {
-        this->ghostState->SetRightImages(images);
-    }
-
-    void SetLeftImages(const std::vector<std::string> &images) {
-        this->ghostState->SetLeftImages(images);
-    }
-
-    void Draw() {
+    void Dead() {
+        this->ghostState = deadGhost;
         SetDrawable(ghostState->GetUpImages());
     }
 
@@ -68,6 +89,16 @@ public:
 
 private:
     GhostState *ghostState;
+    GhostNormalState *normalGhost;
+    GhostDeadState *deadGhost;
+    GhostVulnerableState *vulnerableGhost;
+
+    std::vector<std::string> VulnerableGhostsImages = {
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_01.png",
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_02.png",
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_01.png",
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
+    };
 };
 
 #endif //REPLACE_WITH_YOUR_PROJECT_NAME_GHOST_HPP
