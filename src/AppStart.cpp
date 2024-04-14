@@ -47,17 +47,15 @@ void App::Start() {
     map = std::make_shared<Map>(x_block_num, y_block_num, map_by_number);
     root.AddChild(map);
 
-    VulnerableGhostsImages = {
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_01.png",
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_02.png",
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_01.png",
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
-    };
+    blinky = std::make_shared<Ghost>("blinky");
+    pinky = std::make_shared<Ghost>("pinky");
+    inky = std::make_shared<Ghost>("inky");
+    clyde = std::make_shared<Ghost>("clyde");
+    blinky->SetPosition({-0.0, 104});
+    pinky->SetPosition({-40.0, 56});
+    inky->SetPosition({-8.0, 56});
+    clyde->SetPosition({24.0, 56});
 
-    blinky = CreateGhost(RESOURCE_DIR, -100.0f, -100.0f, "blinky", normalBlinky);
-    pinky = CreateGhost(RESOURCE_DIR, 100.0f, -100.0f, "pinky", normalPinky);
-    inky = CreateGhost(RESOURCE_DIR, -100.0f, 100.0f, "inky", normalInky);
-    clyde = CreateGhost(RESOURCE_DIR, 100.0f, 100.0f, "clyde", normalClyde);
     root.AddChild(blinky);
     root.AddChild(pinky);
     root.AddChild(inky);

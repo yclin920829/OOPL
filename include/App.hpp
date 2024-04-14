@@ -46,18 +46,9 @@ private:
     std::shared_ptr<Ghost> inky;
     std::shared_ptr<Ghost> clyde;
 
-    GhostNormalState * normalBlinky = new GhostNormalState();
-    GhostNormalState * normalPinky = new GhostNormalState();
-    GhostNormalState * normalInky = new GhostNormalState();
-    GhostNormalState * normalClyde = new GhostNormalState();
-    GhostDeadState * deadGhost = new GhostDeadState();
-    GhostVulnerableState * vulnerableGhost = new GhostVulnerableState();
-
     std::shared_ptr<Pacman> pacman;
 
     std::shared_ptr<Fruit> cherry;
-
-    std::vector<std::string> VulnerableGhostsImages;
 
     enum Direction { UP, DOWN, RIGHT, LEFT, NONE };
     Direction currentDirection = LEFT;
