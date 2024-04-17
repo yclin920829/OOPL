@@ -3,10 +3,29 @@
 
 #include "Util/GameObject.hpp"
 #include "Util/Animation.hpp"
+#include "EventManager.hpp"
 
 class Pacman : public Util::GameObject {
 public:
     explicit Pacman() = default;
+    ~Pacman() = default;
+
+    explicit Pacman(EventManager& eventManager) : eventManager(eventManager){
+        this->eventManager = eventManager;
+    };
+
+    void HandleCollision(int damage = 1){
+        CollisionEventData eventData;
+        eventData.damage = damage;
+        eventManager.notify(COLLISION_WITH_GHOST_EVENT_NOT_INVINCIBLE, eventData);
+    }//處理扣血
+
+    void HandleScoreUpCollision(int score =  15){
+        CollisionToAddEventData eventData;
+        eventData.quantity = score;
+        eventManager.notify(COLLISION_TO_ADD_SCORE, eventData);
+    }//處理加分
+
 
     void SetUpImages(const std::vector<std::string> &images) {
         UP = std::make_shared<Util::Animation>(images, true, 300, true, 0);
@@ -65,6 +84,7 @@ public:
     void SetPosition(const glm::vec2 &Position) { m_Transform.translation = Position; }
 
 private:
+    EventManager& eventManager;
     std::shared_ptr<Core::Drawable> UP;
     std::shared_ptr<Core::Drawable> DOWN;
     std::shared_ptr<Core::Drawable> RIGHT;

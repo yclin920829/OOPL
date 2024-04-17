@@ -25,9 +25,18 @@ public:
 
     void SetPosition(const glm::vec2& Position) { m_Transform.translation = Position; }
 
+    int GetDeleteUnitTime(){
+        return deleteUnitTime;
+    }
+
+    void SetDeleteTime(){
+        this->deleteUnitTime++;
+    }
+
 
 private:
     void ResetPosition() { m_Transform.translation = {0, 0}; }
+    int deleteUnitTime = 0;
 
     std::string m_ImagePath;
 };
