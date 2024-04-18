@@ -9,6 +9,10 @@
 #include "ghost/GhostDeadState.hpp"
 #include "ghost/GhostNormalState.hpp"
 #include "ghost/GhostVulnerableState.hpp"
+#include "outSkirt/LifeSystem.hpp"
+#include "outSkirt/FruitSystem.hpp"
+#include "RandomFactory.hpp"
+#include "outSkirt/ScoreSystem.hpp"
 
 #include "Util/Root.hpp"
 #include "Map.hpp"
@@ -40,7 +44,18 @@ private:
 
     Util::Root root;
 
+    //方便外框顯示的位置調整
+    int thisMapX;
+    int thisMapY;
     std::shared_ptr<Map> map;
+    //std::shared_ptr<Block> m_Block;
+    bool m_EnterDown = false;
+
+    std::shared_ptr<LifeSystem> lifeSystem;
+    std::shared_ptr<ScoreSystem> scoreSystem;
+    std::shared_ptr<FruitSystem> fruitSystem;
+    EventManager eventManager = EventManager();
+    RandomFactory randomFactory = RandomFactory();
 
     std::shared_ptr<Ghost> blinky;
     std::shared_ptr<Ghost> pinky;
@@ -56,11 +71,17 @@ private:
 
     std::shared_ptr<Pacman> pacman;
 
-    std::shared_ptr<Fruit> cherry;
+    //std::shared_ptr<Fruit> cherry;
 
     std::vector<std::string> VulnerableGhostsImages;
 
+    int xMap;
+    int yMap;
+
 protected:
+
+
+
     std::shared_ptr<Ghost> CreateGhost(const std::string& dir, float posX, float posY, const std::string& name, GhostState * normalGhost) {
         std::shared_ptr<Ghost> ghost = std::make_shared<Ghost>();
         ghost->SetState(normalGhost);
@@ -88,6 +109,11 @@ protected:
         ghost->Draw();
 
         return ghost;
+    }
+protected:
+
+    std::shared_ptr<Map> GetMap(){
+        return map;
     }
 };
 

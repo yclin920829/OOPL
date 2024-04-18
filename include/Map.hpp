@@ -8,6 +8,7 @@
 #include <map>
 #include "Block.hpp"
 
+#include "outSkirt/LifeSystem.hpp"
 #include "Util/Animation.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Root.hpp"
@@ -34,7 +35,6 @@ public:
             this->map_by_number.push_back(row);
         }
         this->print();
-
     }
 
     void print() {
