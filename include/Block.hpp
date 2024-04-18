@@ -1,14 +1,14 @@
 #ifndef REPLACE_WITH_YOUR_PROJECT_NAME_BLOCK_HPP
 #define REPLACE_WITH_YOUR_PROJECT_NAME_BLOCK_HPP
 
-#include <string>
-#include <map>
-
 #include "Util/GameObject.hpp"
 
 class Block : public Util::GameObject {
 public:
-    explicit Block(int block_code_number);
+    explicit Block(std::string blockName, int codeNumber) : name(std::move(blockName)), codeNumber(codeNumber) {
+        SetImage(RESOURCE_DIR"/Image/Map_Blocks/" + this->name + ".png");
+        m_Transform.translation = {0, 0};
+    }
 
     [[nodiscard]] const std::string &GetImagePath() const { return imagePath; }
 
@@ -16,7 +16,10 @@ public:
 
     [[nodiscard]] bool GetVisibility() const { return m_Visible; }
 
-    void SetImage(const std::string &ImagePath);
+    void SetImage(const std::string &ImagePath) {
+        imagePath = ImagePath;
+        m_Drawable = std::make_shared<Util::Image>(imagePath);
+    };
 
     void SetPosition(const glm::vec2 &Position) { m_Transform.translation = Position; };
 
@@ -24,12 +27,11 @@ public:
 
     void SetName(const std::string name) { this->name = name; }
 
-    [[nodiscard]] int GetBlockNumber() const { return blockNumber; }
+    [[nodiscard]] int GetCodeNumber() const { return codeNumber; }
 
 private:
     std::string name;
-    int blockNumber;
-    std::map<int, std::string> Mapper;
+    int codeNumber;
     std::string imagePath;
 
 };
