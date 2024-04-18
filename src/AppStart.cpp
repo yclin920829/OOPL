@@ -85,6 +85,14 @@ void App::Start() {
         RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
     };
 
+    blinky = std::make_shared<Ghost>("blinky");
+    pinky = std::make_shared<Ghost>("pinky");
+    inky = std::make_shared<Ghost>("inky");
+    clyde = std::make_shared<Ghost>("clyde");
+    blinky->SetPosition({-0.0, 104});
+    pinky->SetPosition({-40.0, 56});
+    inky->SetPosition({-8.0, 56});
+    clyde->SetPosition({24.0, 56});
     root.AddChild(blinky);
     root.AddChild(pinky);
     root.AddChild(inky);
@@ -93,7 +101,7 @@ void App::Start() {
     std::vector<std::string> deadImages;
     deadImages.reserve(13);
     for (int i = 0; i < 13; ++i) {
-        deadImages.emplace_back(
+        deadImages.push_back(
             RESOURCE_DIR"/Image/Character/Pacman_dead/Pacman_dead" + std::to_string(i + 1) + ".png");
     }
 
