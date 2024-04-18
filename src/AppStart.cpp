@@ -78,12 +78,11 @@ void App::Start() {
     root.AddChild(fruitSystem);
 
 
-
     VulnerableGhostsImages = {
-            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_01.png",
-            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_02.png",
-            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_01.png",
-            RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_01.png",
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_02.png",
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_01.png",
+        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
     };
 
     blinky = CreateGhost(RESOURCE_DIR, -100.0f, -100.0f, "blinky", normalBlinky);
@@ -99,26 +98,30 @@ void App::Start() {
     deadImages.reserve(13);
     for (int i = 0; i < 13; ++i) {
         deadImages.emplace_back(
-                RESOURCE_DIR"/Image/Character/Pacman_dead/Pacman_dead" + std::to_string(i + 1) + ".png");
+            RESOURCE_DIR"/Image/Character/Pacman_dead/Pacman_dead" + std::to_string(i + 1) + ".png");
     }
+
 
     pacman = std::make_shared<Pacman>(eventManager);
     pacman->SetUpImages({RESOURCE_DIR"/Image/Character/pacman/pacman_U_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_U_02.png"});
     pacman->SetDownImages({RESOURCE_DIR"/Image/Character/pacman/pacman_D_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_D_02.png"});
     pacman->SetRightImages({RESOURCE_DIR"/Image/Character/pacman/pacman_R_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_R_02.png"});
     pacman->SetLeftImages({RESOURCE_DIR"/Image/Character/pacman/pacman_L_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_L_02.png"});
+
     pacman->SetDeadImages(deadImages);
 
     pacman->SetZIndex(5);
     pacman->SetVisible(true);
-    pacman->SetPosition({0.0f, 0.0f});
+    pacman->SetPosition({-0.0f, -88.0f});
     pacman->Start();
     root.AddChild(pacman);
 
     /*cherry = std::make_shared<Fruit>(RESOURCE_DIR"/Image/Character/Fruit/cherry.png");
     cherry->SetPosition({0.0f, 100.0f});
     cherry->SetZIndex(1);
-    root.AddChild(cherry);*/
+
+    cherry->SetVisible(false);
+    root.AddChild(cherry);
 
     m_CurrentState = State::UPDATE;
 }

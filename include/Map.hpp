@@ -12,20 +12,6 @@
 #include "Util/Animation.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Root.hpp"
-//using namespace std;
-
-
-/*class Map : public Util::GameObject {
-
-public:
-    explicit Map(const int x_size, const int y_size, std::vector<std::vector<int>> map_by_number);
-
-    //單一地圖開啟時呼叫一輪來貼上圖片
-    void Activate(int x_index_now, int y_index_now, int max_x, int max_y, float x_transfer, float y_transfer, std::shared_ptr<Block> now_block);
-
-    std::vector<std::vector<std::shared_ptr<Block>>> map;
-
-};*/
 
 class Map : public Util::GameObject {
 public:
@@ -49,7 +35,6 @@ public:
             this->map_by_number.push_back(row);
         }
         this->print();
-
     }
 
     void print() {
@@ -83,11 +68,9 @@ public:
         return false;
     }
 
-    std::vector<std::vector<std::shared_ptr<Block>>> map_by_number;
-
 private:
     double pixel = 16;
-    //std::vector<std::vector<std::shared_ptr<Block>>> map_by_number;
+    std::vector<std::vector<std::shared_ptr<Block>>> map_by_number;
 };
 
 #endif //MAP_HPP

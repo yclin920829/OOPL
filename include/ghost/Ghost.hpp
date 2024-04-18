@@ -15,7 +15,6 @@ public:
 
     void SetState(GhostState *state) {
         this->ghostState = state;
-        GetState();
         Draw();
     }
 
@@ -42,25 +41,25 @@ public:
     void MoveUp() {
         SetDrawable(ghostState->GetUpImages());
         auto position = GetPosition();
-        SetPosition({position.x, position.y + 2.5f});
+        SetPosition({position.x, position.y + 8.0f});
     }
 
     void MoveDown() {
         SetDrawable(ghostState->GetDownImages());
         auto position = GetPosition();
-        SetPosition({position.x, position.y - 2.5f});
+        SetPosition({position.x, position.y - 8.0f});
     }
 
     void MoveRight() {
         SetDrawable(ghostState->GetRightImages());
         auto position = GetPosition();
-        SetPosition({position.x + 2.5f, position.y});
+        SetPosition({position.x + 8.0f, position.y});
     }
 
     void MoveLeft() {
         SetDrawable(ghostState->GetLeftImages());
         auto position = GetPosition();
-        SetPosition({position.x - 2.5f, position.y});
+        SetPosition({position.x - 8.0f, position.y});
     }
 
     [[nodiscard]] const glm::vec2 &GetPosition() const { return m_Transform.translation; }

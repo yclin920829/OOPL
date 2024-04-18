@@ -18,8 +18,6 @@
 #include "Map.hpp"
 #include "Block.hpp"
 #include "Util/Text.hpp"
-//#include "PhaseResourceManger.hpp"
-//#include "AnimatedCharacter.hpp"
 
 class App {
 public:
@@ -58,8 +56,7 @@ private:
     std::shared_ptr<FruitSystem> fruitSystem;
     EventManager eventManager = EventManager();
     RandomFactory randomFactory = RandomFactory();
-  
-    
+
     std::shared_ptr<Ghost> blinky;
     std::shared_ptr<Ghost> pinky;
     std::shared_ptr<Ghost> inky;

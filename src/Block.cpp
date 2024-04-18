@@ -2,7 +2,7 @@
 #include "Block.hpp"
 #include "Util/Image.hpp"
 
-Block :: Block(int map_code_number) {
+Block :: Block(int map_code_number): blockNumber(map_code_number) {
     Mapper[0] = "in_game_black";
     Mapper[1] = "upper_border";
     Mapper[2] = "lower_border";
@@ -45,18 +45,11 @@ Block :: Block(int map_code_number) {
     Mapper[39] = "trans_lower_left_side";
     Mapper[40] = "in_game_blue";
     SetImage(RESOURCE_DIR"/Image/Map_Blocks/" + Mapper[map_code_number] + ".png");
-//    std::cout << RESOURCE_DIR"/Image/Map_Blocks/" + Mapper[map_code_number] + ".png\n";
-//    std::cout << std::to_string(map_code_number) ;
-//    SetImage(RESOURCE_DIR"/Image/Map_Blocks/lower_right_respawn.png");
-
+    SetName( Mapper[map_code_number]);
 }
 
-int Block::GetBlockNumber(){
-    return map_code_number;
-}
 
 void Block::SetImage(const std::string &ImagePath) {
-    m_ImagePath = ImagePath;
-
-    m_Drawable = std::make_shared<Util::Image>(m_ImagePath);
+    imagePath = ImagePath;
+    m_Drawable = std::make_shared<Util::Image>(imagePath);
 }
