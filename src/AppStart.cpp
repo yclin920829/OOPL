@@ -53,28 +53,30 @@ void App::Start() {
 
     //初始化lifeSystem
     lifeSystem = std::make_shared<LifeSystem>(eventManager);
-    float lifeSysX = map->map_by_number[y_block_num-1][0]->GetPosition().x;
-    float lifeSysY = map->map_by_number[y_block_num-1][0]->GetPosition().y;
-    lifeSystem->SetNowXY(lifeSysX,lifeSysY );
+//    float lifeSysX = map->map_by_number[y_block_num-1][0]->GetPosition().x;
+//    float lifeSysY = map->map_by_number[y_block_num-1][0]->GetPosition().y;
+//    lifeSystem->SetNowXY(lifeSysX,lifeSysY );
+    lifeSystem->SetNowXY(-224, -216);
     root.AddChild(lifeSystem);
 
     //初始化scoreSystem
     scoreSystem = std::make_shared<ScoreSystem>(eventManager);
-    float scoreSysMinx = map->map_by_number[0][0]->GetPosition().x;
-    float scoreSysMaxx = map->map_by_number[0][x_block_num - 1]->GetPosition().x;
-    float scoreSysMaxy = map->map_by_number[0][0]->GetPosition().y;
-    scoreSystem -> SetNowXY(scoreSysMinx, scoreSysMaxx, scoreSysMaxy);
-    scoreSystem -> InitialScoreSystem();
+//    float scoreSysMinx = map->map_by_number[0][0]->GetPosition().x;
+//    float scoreSysMaxx = map->map_by_number[0][x_block_num - 1]->GetPosition().x;
+//    float scoreSysMaxy = map->map_by_number[0][0]->GetPosition().y;
+//    scoreSystem -> SetNowXY(scoreSysMinx, scoreSysMaxx, scoreSysMaxy);
+    scoreSystem->SetNowXY(-224, 208, 264);
+    scoreSystem->InitialScoreSystem();
     root.AddChild(scoreSystem);
 
     //初始化fruitSystem
     fruitSystem = std::make_shared<FruitSystem>();
-    float fruitSysX = map->map_by_number[y_block_num - 1][x_block_num - 1]->GetPosition().x + 32;
-    float fruitSysY = map->map_by_number[y_block_num - 1][x_block_num - 1]->GetPosition().y;
-    glm::vec2 fruitSys;
-    fruitSys.x = fruitSysX;
-    fruitSys.y = fruitSysY;
-    fruitSystem -> SetPosition(fruitSys);
+//    float fruitSysX = map->map_by_number[y_block_num - 1][x_block_num - 1]->GetPosition().x + 32;
+//    float fruitSysY = map->map_by_number[y_block_num - 1][x_block_num - 1]->GetPosition().y;
+//    glm::vec2 fruitSys;
+//    fruitSys.x = fruitSysX;
+//    fruitSys.y = fruitSysY;
+    fruitSystem->SetPosition({240, -216});
     root.AddChild(fruitSystem);
 
 
@@ -107,14 +109,18 @@ void App::Start() {
 
 
     pacman = std::make_shared<Pacman>(eventManager);
-    pacman->SetUpImages({RESOURCE_DIR"/Image/Character/pacman/pacman_U_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_U_02.png"});
-    pacman->SetDownImages({RESOURCE_DIR"/Image/Character/pacman/pacman_D_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_D_02.png"});
-    pacman->SetRightImages({RESOURCE_DIR"/Image/Character/pacman/pacman_R_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_R_02.png"});
-    pacman->SetLeftImages({RESOURCE_DIR"/Image/Character/pacman/pacman_L_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_L_02.png"});
+    pacman->SetUpImages(
+        {RESOURCE_DIR"/Image/Character/pacman/pacman_U_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_U_02.png"});
+    pacman->SetDownImages(
+        {RESOURCE_DIR"/Image/Character/pacman/pacman_D_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_D_02.png"});
+    pacman->SetRightImages(
+        {RESOURCE_DIR"/Image/Character/pacman/pacman_R_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_R_02.png"});
+    pacman->SetLeftImages(
+        {RESOURCE_DIR"/Image/Character/pacman/pacman_L_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_L_02.png"});
 
     pacman->SetDeadImages(deadImages);
 
-    pacman->SetZIndex(5);
+    pacman->SetZIndex(20);
     pacman->SetVisible(true);
     pacman->SetPosition({-0.0f, -88.0f});
     pacman->Start();
