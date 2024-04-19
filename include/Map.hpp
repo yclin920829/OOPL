@@ -28,16 +28,20 @@ public:
                 if (0 == map_by_number[i][j]) {
                     smallBeans.push_back(block);
                     pacmanRoads.push_back(block);
+                    ghostRoads.push_back(block);
                 } else if (43 == map_by_number[i][j]) {
                     largeBeans.push_back(block);
                     pacmanRoads.push_back(block);
+                    ghostRoads.push_back(block);
                 } else if (42 == map_by_number[i][j]) {
                     pacmanRoads.push_back(block);
+                    ghostRoads.push_back(block);
+                }else if (19 == map_by_number[i][j] || 41 == map_by_number[i][j]){
+                    ghostRoads.push_back(block);
                 }
             }
         }
     }
-
 
     bool IsPacmanRoad(const glm::vec2 &Position) {
         auto it = find_if(pacmanRoads.begin(), pacmanRoads.end(),
@@ -46,6 +50,16 @@ public:
                           });
 
         if (it != pacmanRoads.end()) return true;
+        return false;
+    }
+
+    bool IsGhostRoad(const glm::vec2 &Position) {
+        auto it = find_if(ghostRoads.begin(), ghostRoads.end(),
+                          [&Position](const std::shared_ptr<Block> &obj) {
+                              return (obj->GetPosition() == Position);
+                          });
+
+        if (it != ghostRoads.end()) return true;
         return false;
     }
 
@@ -59,6 +73,7 @@ public:
 
 private:
     double pixel = 16;
+    std::vector<std::shared_ptr<Block>> ghostRoads;
     std::vector<std::shared_ptr<Block>> pacmanRoads;
     std::vector<std::shared_ptr<Block>> smallBeans;
     std::vector<std::shared_ptr<Block>> largeBeans;
