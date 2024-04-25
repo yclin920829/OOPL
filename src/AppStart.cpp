@@ -51,12 +51,9 @@ void App::Start() {
     map = std::make_shared<Map>(x_block_num, y_block_num, map_by_number);
     root.AddChild(map);
 
-    //初始化lifeSystem
     lifeSystem = std::make_shared<LifeSystem>(eventManager);
-//    float lifeSysX = map->map_by_number[y_block_num-1][0]->GetPosition().x;
-//    float lifeSysY = map->map_by_number[y_block_num-1][0]->GetPosition().y;
-//    lifeSystem->SetNowXY(lifeSysX,lifeSysY );
-    lifeSystem->SetNowXY(-224, -216);
+    lifeSystem->SetInitialPosition({-224, -216});
+    lifeSystem->InitialLifeSystem();
     root.AddChild(lifeSystem);
 
     //初始化scoreSystem
