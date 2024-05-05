@@ -1,6 +1,5 @@
 #ifndef REPLACE_WITH_YOUR_PROJECT_NAME_FRUIT_HPP
 #define REPLACE_WITH_YOUR_PROJECT_NAME_FRUIT_HPP
-#include <string>
 
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
@@ -25,19 +24,8 @@ public:
 
     void SetPosition(const glm::vec2& Position) { m_Transform.translation = Position; }
 
-    int GetDeleteUnitTime(){
-        return deleteUnitTime;
-    }
-
-    void SetDeleteTime(){
-        this->deleteUnitTime++;
-    }
-
-
 private:
     void ResetPosition() { m_Transform.translation = {0, 0}; }
-    int deleteUnitTime = 0;
-
     std::string m_ImagePath;
 };
 
