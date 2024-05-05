@@ -6,6 +6,7 @@
 #include "Util/GameObject.hpp"
 #include "Util/Logger.hpp"
 #include "life/Life.hpp"
+#include "App.hpp"
 
 class LifeSystem : public Util::GameObject {
 public:
@@ -31,7 +32,7 @@ public:
 
     void InitialLifeSystem() {
         lifes.clear();
-        for (int i = 0; i < 3 ; i++){
+        for (int i = 0; i < hitPoints ; i++){
             std::shared_ptr<Life> life = std::make_shared<Life>();
             life->SetPosition({position.x - 32, (position.y + (float)i * 32)});
             this->AddChild(life);
@@ -39,14 +40,19 @@ public:
         }
     };
 
-    void SetInitialPosition(glm::vec2 position) {
+    void SetSystemPosition(glm::vec2 position) {
         this->position = position;
     };
+
+    bool IsDone(){
+        if(hitPoints == 0) return true;
+        return false;
+    }
 
 private:
     glm::vec2 position {0, 0};
 
-    int hitPoints = 3;
+    int hitPoints = 2;
     std::vector<std::shared_ptr<Life>> lifes;
 
 };

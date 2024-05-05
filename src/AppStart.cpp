@@ -9,9 +9,6 @@ void App::Start() {
     int x_block_num = 28;
     int y_block_num = 31;
 
-    xMap = x_block_num;
-    yMap = y_block_num;
-
     std::vector<std::vector<int>> map_by_number(y_block_num, std::vector<int>(x_block_num));
 
     map_by_number = {
@@ -52,28 +49,18 @@ void App::Start() {
     root.AddChild(map);
 
     lifeSystem = std::make_shared<LifeSystem>(eventManager);
-    lifeSystem->SetInitialPosition({-224, -216});
+    lifeSystem->SetSystemPosition({-224, -216});
     lifeSystem->InitialLifeSystem();
     root.AddChild(lifeSystem);
 
     //初始化scoreSystem
     scoreSystem = std::make_shared<ScoreSystem>(eventManager);
-//    float scoreSysMinx = map->map_by_number[0][0]->GetPosition().x;
-//    float scoreSysMaxx = map->map_by_number[0][x_block_num - 1]->GetPosition().x;
-//    float scoreSysMaxy = map->map_by_number[0][0]->GetPosition().y;
-//    scoreSystem -> SetNowXY(scoreSysMinx, scoreSysMaxx, scoreSysMaxy);
     scoreSystem->SetNowXY(-224, 208, 264);
     scoreSystem->InitialScoreSystem();
     root.AddChild(scoreSystem);
 
-    //初始化fruitSystem
     fruitSystem = std::make_shared<FruitSystem>();
-//    float fruitSysX = map->map_by_number[y_block_num - 1][x_block_num - 1]->GetPosition().x + 32;
-//    float fruitSysY = map->map_by_number[y_block_num - 1][x_block_num - 1]->GetPosition().y;
-//    glm::vec2 fruitSys;
-//    fruitSys.x = fruitSysX;
-//    fruitSys.y = fruitSysY;
-    fruitSystem->SetPosition({240, -216});
+    fruitSystem->SetSystemPosition({240, -216});
     root.AddChild(fruitSystem);
 
 
@@ -84,14 +71,14 @@ void App::Start() {
         RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
     };
 
-    blinky = std::make_shared<Ghost>("blinky");
-    pinky = std::make_shared<Ghost>("pinky");
-    inky = std::make_shared<Ghost>("inky");
-    clyde = std::make_shared<Ghost>("clyde");
+    blinky = std::make_shared<Ghost>("blinky", map->GetGhostMap());
+    pinky = std::make_shared<Ghost>("pinky", map->GetGhostMap());
+    inky = std::make_shared<Ghost>("inky", map->GetGhostMap());
+    clyde = std::make_shared<Ghost>("clyde", map->GetGhostMap());
     blinky->SetPosition({-0.0, 104});
     pinky->SetPosition({-40.0, 56});
-    inky->SetPosition({-8.0, 56});
-    clyde->SetPosition({24.0, 56});
+    inky->SetPosition({-16.0, 56});
+    clyde->SetPosition({16.0, 56});
     root.AddChild(blinky);
     root.AddChild(pinky);
     root.AddChild(inky);
@@ -114,7 +101,6 @@ void App::Start() {
         {RESOURCE_DIR"/Image/Character/pacman/pacman_R_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_R_02.png"});
     pacman->SetLeftImages(
         {RESOURCE_DIR"/Image/Character/pacman/pacman_L_01.png", RESOURCE_DIR"/Image/Character/pacman/pacman_L_02.png"});
-
     pacman->SetDeadImages(deadImages);
 
     pacman->SetZIndex(20);
@@ -123,13 +109,30 @@ void App::Start() {
     pacman->Start();
     root.AddChild(pacman);
 
-    /*cherry = std::make_shared<Fruit>(RESOURCE_DIR"/Image/Character/Fruit/cherry.png");
-    cherry->SetPosition({0.0f, 100.0f});
-    cherry->SetZIndex(1);
 
-    cherry->SetVisible(false);
-    root.AddChild(cherry);
-    */
+    
+    blinky->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
+    blinky->shortestPath(
+        map->changeToPositionInVector(blinky->GetPosition())
+    );
+
+
+    pinky->SetPosition({-32, 56});
+    pinky->SetTargetPosition(map->changeToPositionInVector({192, 248}));
+    pinky->shortestPath(
+        map->changeToPositionInVector(pinky->GetPosition())
+    );
+
+    inky->SetTargetPosition(map->changeToPositionInVector({-208, -200}));
+    inky->shortestPath(
+        map->changeToPositionInVector(inky->GetPosition())
+    );
+
+    clyde->SetTargetPosition(map->changeToPositionInVector({192, -200}));
+    clyde->shortestPath(
+        map->changeToPositionInVector(clyde->GetPosition())
+    );
+
 
     m_CurrentState = State::UPDATE;
 }

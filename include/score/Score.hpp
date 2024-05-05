@@ -3,17 +3,15 @@
 
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
-#include "Number.hpp"
+#include "score/Number.hpp"
 #include <vector>
 
 class Score : public Util::GameObject {
 public:
     explicit Score()=default;
 
-    [[nodiscard]] bool GetVisibility() const { return m_Visible; }
 
     void SetImage(const std::string& ImagePath){
-        //m_ImagePath = ImagePath;
         m_Drawable = std::make_shared<Util::Image>(ImagePath);
     };
 
@@ -77,22 +75,16 @@ public:
     std::vector<int> splitDigits(int input) {
         std::vector<int> digits;
 
-        // 将输入的数字逐位拆解并存储到数组中
         while (input > 0) {
-            // 取出最低位的数字
             int digit = input % 10;
-            // 将数字存入数组
             digits.push_back(digit);
-            // 去掉最低位的数字
             input /= 10;
         }
 
-        // 如果数组长度不足五位，则填充零
         while (digits.size() < 5) {
             digits.push_back(0);
         }
 
-        // 反转数组，使得数组中的数字按照从高位到低位的顺序排列
         std::reverse(digits.begin(), digits.end());
 
         return digits;

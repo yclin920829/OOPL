@@ -12,34 +12,64 @@ public:
     explicit Map(const int m, const int n, std::vector<std::vector<int>> map_by_number) {
         double x_transfer = (pixel / 2) * m;
         double y_transfer = (pixel / 2) * n;
+        std::vector<int> row;
 
         for (int i = 0; i < n; ++i) {
+            row.clear();
             for (int j = 0; j < m; ++j) {
                 double positionX = (j * pixel) - x_transfer;
                 double positionY = ((n - i + 1) * pixel) - y_transfer;
 
                 std::shared_ptr<Block> block = std::make_shared<Block>(
                     this->Mapper.at(map_by_number[i][j]),
-                    map_by_number[i][j]
+                    map_by_number[i][j],
+                    i, j
                 );
                 block->SetPosition({positionX, positionY});
+                std::cout << block->GetPosition().x << block->GetPosition().y << "(" << block->GetCodeNumber() << ")" << " ";
                 this->AddChild(block);
 
                 if (0 == map_by_number[i][j]) {
                     smallBeans.push_back(block);
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
+                    row.push_back(1);
                 } else if (43 == map_by_number[i][j]) {
                     largeBeans.push_back(block);
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
+                    row.push_back(1);
                 } else if (42 == map_by_number[i][j]) {
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
+                    row.push_back(1);
                 }else if (19 == map_by_number[i][j] || 41 == map_by_number[i][j]){
                     ghostRoads.push_back(block);
+                    row.push_back(1);
+                }else{
+                    row.push_back(0);
                 }
+
             }
+            std::cout << "\n";
+            ghostMap.push_back(row);
+        }
+        printAAA();
+    }
+
+    bool printAAA(){
+        for(int i = 0; i < 28; i++){
+            std::cout << i << " ";
+        }
+        std::cout << "\n";
+        int i = 0;
+        for (std::vector<int> row : ghostMap){
+            std::cout << i << ": ";
+            for(int road : row){
+                std::cout << road << " ";
+            }
+            i++;
+            std::cout << "\n";
         }
     }
 
@@ -63,6 +93,25 @@ public:
         return false;
     }
 
+    glm::vec2 changeToPositionInVector(const glm::vec2 &Position) {
+        std::shared_ptr<Block> block;
+        auto it = find_if(ghostRoads.begin(), ghostRoads.end(),
+                          [&Position, &block](const std::shared_ptr<Block> &obj) {
+                                block = obj;
+                              return (obj->GetPosition() == Position);
+                          });
+
+        if (it != ghostRoads.end()) {
+            return block->getPositionInVector();
+        }else{
+            LOG_DEBUG("not fund");
+        }
+    }
+
+    std::vector<std::vector<int>> GetGhostMap() {
+        return ghostMap;
+    }
+
     [[nodiscard]] const std::vector<std::shared_ptr<Block>> &GetSmallBeans() const {
         return smallBeans;
     }
@@ -71,12 +120,18 @@ public:
         return largeBeans;
     }
 
+    [[nodiscard]] const std::vector<std::shared_ptr<Block>> &GetGhostRoad() const {
+        return ghostRoads;
+    }
+
 private:
     double pixel = 16;
     std::vector<std::shared_ptr<Block>> ghostRoads;
     std::vector<std::shared_ptr<Block>> pacmanRoads;
     std::vector<std::shared_ptr<Block>> smallBeans;
     std::vector<std::shared_ptr<Block>> largeBeans;
+
+    std::vector<std::vector<int>> ghostMap;
 
     std::map<int, std::string> Mapper{
         {0,  "small_ball"},

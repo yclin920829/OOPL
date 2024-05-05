@@ -16,7 +16,7 @@ file(GLOB_RECURSE SRC_FILES src/*.cpp)
 file(GLOB_RECURSE HEADER_FILES include/*.hpp)
 
 add_executable(${PROJECT_NAME}
-    ${SRC_DIR}/main.cpp
+    ${SRC_DIR}
     ${SRC_FILES}
     ${HEADER_FILES}
 )

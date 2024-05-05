@@ -5,9 +5,10 @@
 
 class Block : public Util::GameObject {
 public:
-    explicit Block(std::string blockName, int codeNumber) : name(std::move(blockName)), codeNumber(codeNumber) {
+    explicit Block(std::string blockName, int codeNumber, int positionInVectorX, int positionInVectorY) : name(std::move(blockName)), codeNumber(codeNumber) {
         SetImage(RESOURCE_DIR"/Image/Map_Blocks/" + this->name + ".png");
         m_Transform.translation = {0, 0};
+        positionInVector = {positionInVectorX, positionInVectorY};
     }
 
     [[nodiscard]] const std::string &GetImagePath() const { return imagePath; }
@@ -29,10 +30,15 @@ public:
 
     [[nodiscard]] int GetCodeNumber() const { return codeNumber; }
 
+    const glm::vec2 &getPositionInVector() const {
+        return positionInVector;
+    }
+
 private:
     std::string name;
     int codeNumber;
     std::string imagePath;
+    glm::vec2 positionInVector = {0, 0};
 
 };
 

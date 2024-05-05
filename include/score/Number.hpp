@@ -11,10 +11,7 @@ class Number : public Util::GameObject {
 public:
     explicit Number() = default;
 
-    [[nodiscard]] bool GetVisibility() const { return m_Visible; }
-
     void SetImage(const std::string &ImagePath) {
-        //m_ImagePath = ImagePath;
         m_Drawable = std::make_shared<Util::Image>(ImagePath);
     };
 
@@ -40,9 +37,7 @@ public:
     }
 
 private:
-    //void ResetPosition() { m_Transform.translation = {0, 0}; }
     int score;
-    int digit_code_number;
     std::map<int, std::string> Mapper;
 
 };

@@ -1,84 +1,254 @@
 #include <iostream>
+#include<chrono>
+#include<thread>
 
 #include "App.hpp"
 #include "Util/Input.hpp"
+#include "Util/Time.hpp"
 
 void App::Update() {
+    if (Util::Input::IsKeyDown(Util::Keycode::UP)) {
+        pacman->setNextDirection(Pacman::Direction::up);
+    } else if (Util::Input::IsKeyDown(Util::Keycode::DOWN)) {
+        pacman->setNextDirection(Pacman::Direction::down);
+    } else if (Util::Input::IsKeyDown(Util::Keycode::RIGHT)) {
+        pacman->setNextDirection(Pacman::Direction::right);
+    } else if (Util::Input::IsKeyDown(Util::Keycode::LEFT)) {
+        pacman->setNextDirection(Pacman::Direction::left);
+    }
 
-    bool UP = (Util::Input::IsKeyPressed(Util::Keycode::UP) || Util::Input::IsKeyDown(Util::Keycode::UP));
-    bool DOWN = (Util::Input::IsKeyPressed(Util::Keycode::DOWN) || Util::Input::IsKeyDown(Util::Keycode::DOWN));
-    bool RIGHT = (Util::Input::IsKeyPressed(Util::Keycode::RIGHT) || Util::Input::IsKeyDown(Util::Keycode::RIGHT));
-    bool LEFT = (Util::Input::IsKeyPressed(Util::Keycode::LEFT) || Util::Input::IsKeyDown(Util::Keycode::LEFT));
+    glm::vec2 oldPosition = pacman->GetPosition();
+    switch (pacman->getNextDirection()) {
+        case Pacman::Direction::up:
+            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y + 16.0f})) {
+                pacman->setCurrentDirection(pacman->getNextDirection());
+            }
+            break;
+        case Pacman::Direction::down:
+            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y - 16.0f})) {
+                pacman->setCurrentDirection(pacman->getNextDirection());
+            }
+            break;
+        case Pacman::Direction::right:
+            if (map->IsPacmanRoad({oldPosition.x + 16.0f, oldPosition.y})) {
+                pacman->setCurrentDirection(pacman->getNextDirection());
+            }
+            break;
+        case Pacman::Direction::left:
+            if (map->IsPacmanRoad({oldPosition.x - 16.0f, oldPosition.y})) {
+                pacman->setCurrentDirection(pacman->getNextDirection());
+            }
+            break;
+        case Pacman::Direction::none:
+            break;
+    }
 
-    if (UP && !DOWN && !RIGHT && !LEFT) {
-        glm::vec2 oldPosition = pacman->GetPosition();
-        glm::vec2 newPosition = {oldPosition.x, oldPosition.y + 16.0f};
-        if (map->IsPacmanRoad(newPosition)) {
-            pacman->MoveUp();
+    switch (pacman->getCurrentDirection()) {
+        case Pacman::Direction::up:
+            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y + 16.0f})) {
+                // std::this_thread::sleep_for(std::chrono::milliseconds((125 / 4)));
+                pacman->MoveUp();
+            }
+            break;
+        case Pacman::Direction::down:
+            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y - 16.0f})) {
+                // std::this_thread::sleep_for(std::chrono::milliseconds((125 / 4)));
+                pacman->MoveDown();
+            }
+            break;
+        case Pacman::Direction::right:
+            if (map->IsPacmanRoad({oldPosition.x + 16.0f, oldPosition.y})) {
+                // std::this_thread::sleep_for(std::chrono::milliseconds((125 / 4)));
+                pacman->MoveRight();
+            }
+            break;
+        case Pacman::Direction::left:
+            if (map->IsPacmanRoad({oldPosition.x - 16.0f, oldPosition.y})) {
+                // std::this_thread::sleep_for(std::chrono::milliseconds((125 / 4)));
+                pacman->MoveLeft();
+            }
+            break;
+        case Pacman::Direction::none:
+            break;
+    }
+
+    for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
+        if (pacman->eatBean(bean) && bean->GetVisibility()) {
+            bean->SetVisible(false);
+            pacman ->HandleScoreUpCollision();
         }
     }
 
-    if (!UP && DOWN && !RIGHT && !LEFT) {
-        glm::vec2 oldPosition = pacman->GetPosition();
-        glm::vec2 newPosition = {oldPosition.x, oldPosition.y - 16.0f};
-        if (map->IsPacmanRoad(newPosition)) {
-            pacman->MoveDown();
+    for (const std::shared_ptr<Block> &bean: map->GetLargeBeans()) {
+        if (pacman->eatBean(bean) && bean->GetVisibility()) {
+            bean->SetVisible(false);
+            pinky->Vulnerable();
+            blinky->Vulnerable();
+            inky->Vulnerable();
+            clyde->Vulnerable();
+            pacman ->HandleScoreUpCollision(75);
+            time = 0;
+        }
+
+    }
+
+    int counter = 0;
+    for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
+        if(!bean->GetVisibility()){
+            counter ++;
         }
     }
 
-
-    if (PACMAN && NORMAL) pacman->Start();
-    if (PACMAN && DEAD){
-        pacman->Dead();
-    }
-    if (PACMAN && UP) pacman->MoveUp();
-    if (PACMAN && DOWN) pacman->MoveDown();
-    if (PACMAN && RIGHT) pacman->MoveRight();
-    if (PACMAN && LEFT) pacman->MoveLeft();
-
-    int x_random = randomFactory.GenerateRandomNumber(xMap);
-    int y_random = randomFactory.GenerateRandomNumber(yMap);
-
-
-    glm::vec2 randomPosition = map -> map_by_number[y_random - 1][x_random - 1] -> GetPosition();
-    if(map ->IsPacmanRoad(randomPosition)){
-        fruitSystem ->CheckCreatable(randomPosition);
+    if((counter % (map->GetSmallBeans().size() / 3)) == 0  && counter){
+        fruitSystem->getCherry()->SetVisible(true);
     }
 
-    fruitSystem->CheckDeletable();
-
-    auto FAKECOLLISION = Util::Input::IsKeyUp(Util::Keycode::NUM_4);
-    if(FAKECOLLISION){
-        printf("press4");
-        pacman ->HandleCollision();
+    if(pacman->IsCollidesFruit(fruitSystem->getCherry()) && fruitSystem->getCherry()->GetVisibility()){
+        fruitSystem->getCherry()->SetVisible(false);
+        pacman ->HandleScoreUpCollision(100);
     }
 
-    auto FAKEADDTION = Util::Input::IsKeyUp(Util::Keycode::NUM_5);
-    if(FAKEADDTION){
-        printf("press5");
-        pacman ->HandleScoreUpCollision();
+    if (pacman->IsDead() && pacman->IfAnimationEnds()){
+        pacman->ReStart();
+        pacman->setNextDirection(Pacman::Direction::left);
     }
 
-    /*if (Util::Input::IsKeyDown(Util::Keycode::S)) {
-        if (!cherry->GetVisibility()) cherry->SetVisible(true);
-        else cherry->SetVisible(false);
-    }*/
-
-    if (!UP && !DOWN && RIGHT && !LEFT) {
-        glm::vec2 oldPosition = pacman->GetPosition();
-        glm::vec2 newPosition = {oldPosition.x + 16.0f, oldPosition.y};
-        if (map->IsPacmanRoad(newPosition)) {
-            pacman->MoveRight();
+    if (!pacman->IsDead() && pacman->IfCollidesGhost(blinky)) {
+        if (blinky->GetState() == "Normal") {
+            pacman->Dead();
+        } else if (blinky->GetState() == "Vulnerable") {
+            blinky->Dead();
         }
     }
 
-    if (!UP && !DOWN && !RIGHT && LEFT) {
-        glm::vec2 oldPosition = pacman->GetPosition();
-        glm::vec2 newPosition = {oldPosition.x - 16.0f, oldPosition.y};
-        if (map->IsPacmanRoad(newPosition)) {
-            pacman->MoveLeft();
+    if (!pacman->IsDead() && pacman->IfCollidesGhost(pinky)) {
+        if (pinky->GetState() == "Normal") {
+            pacman->Dead();
+        } else if (pinky->GetState() == "Vulnerable") {
+            pinky->Dead();
         }
     }
+
+    if (!pacman->IsDead() && pacman->IfCollidesGhost(inky)) {
+        if (inky->GetState() == "Normal") {
+            pacman->Dead();
+        } else if (inky->GetState() == "Vulnerable") {
+            inky->Dead();
+        }
+    }
+
+    if (!pacman->IsDead() && pacman->IfCollidesGhost(clyde)) {
+        if (clyde->GetState() == "Normal") {
+            pacman->Dead();
+        } else if (clyde->GetState() == "Vulnerable") {
+            clyde->Dead();
+        }
+    }
+
+    if(blinky->IsArrivePosition()){
+        if(blinky->GetState() == "Dead")blinky->ReStart();
+        blinky->SetTargetPosition(map->changeToPositionInVector(
+//            pacman->GetPosition()
+            map->GetGhostRoad()[rand() % map->GetGhostRoad().size()]->GetPosition()
+        ));
+        blinky->shortestPath(
+            map->changeToPositionInVector(blinky->GetPosition())
+        );
+    }
+
+    if(pinky->IsArrivePosition()){
+        if(pinky->GetState() == "Dead")pinky->ReStart();
+        int num = rand() % map->GetSmallBeans().size();
+        while(!map->GetSmallBeans()[num]->GetVisibility()){
+            num = rand() % map->GetSmallBeans().size();
+        }
+        pinky->SetTargetPosition(map->changeToPositionInVector(
+            map->GetSmallBeans()[num]->GetPosition()
+        ));
+        pinky->shortestPath(
+            map->changeToPositionInVector(pinky->GetPosition())
+        );
+
+    }
+
+    if(inky->IsArrivePosition()){
+        if(inky->GetState() == "Dead")inky->ReStart();
+        inky->SetTargetPosition(map->changeToPositionInVector(
+            map->GetLargeBeans()[rand() % map->GetLargeBeans().size()]->GetPosition()
+        ));
+        inky->shortestPath(
+            map->changeToPositionInVector(inky->GetPosition())
+        );
+    }
+
+    if(clyde->IsArrivePosition()){
+        if(clyde->GetState() == "Dead")clyde->ReStart();
+        clyde->SetTargetPosition(map->changeToPositionInVector(
+            map->GetGhostRoad()[rand() % map->GetGhostRoad().size()]->GetPosition()
+        ));
+        clyde->shortestPath(
+            map->changeToPositionInVector(clyde->GetPosition())
+        );
+    }
+
+    if(blinky->GetState() == "Dead"){
+        blinky->SetTargetPosition(map->changeToPositionInVector(
+            {-16,56}
+        ));
+        blinky->shortestPath(
+            map->changeToPositionInVector(blinky->GetPosition())
+        );
+    }
+
+    if(pinky->GetState() == "Dead"){
+        pinky->SetTargetPosition(map->changeToPositionInVector(
+            {-16,56}
+        ));
+        pinky->shortestPath(
+            map->changeToPositionInVector(pinky->GetPosition())
+        );
+    }
+
+    if(inky->GetState() == "Dead"){
+        inky->SetTargetPosition(map->changeToPositionInVector(
+            {-16,56}
+        ));
+        inky->shortestPath(
+            map->changeToPositionInVector(inky->GetPosition())
+        );
+    }
+
+    if(clyde->GetState() == "Dead"){
+        clyde->SetTargetPosition(map->changeToPositionInVector(
+            {-16,56}
+        ));
+        clyde->shortestPath(
+            map->changeToPositionInVector(clyde->GetPosition())
+        );
+    }
+
+    blinky->move();
+    pinky->move();
+    inky->move();
+    clyde->move();
+
+    time++;
+    if(time % (15 * 10) == 0){
+        if(blinky->GetState() == "Vulnerable"){
+            blinky->ReStart();
+        }
+        if(pinky->GetState() == "Vulnerable"){
+            pinky->ReStart();
+        }
+        if(inky->GetState() == "Vulnerable"){
+            inky->ReStart();
+        }
+        if(clyde->GetState() == "Vulnerable"){
+            clyde->ReStart();
+        }
+    }
+
+    if(lifeSystem->IsDone()) m_CurrentState = State::END;
 
     /*
      * Do not touch the code below as they serve the purpose for
@@ -91,4 +261,6 @@ void App::Update() {
 
     root.Update();
 }
+
+// load file
 
