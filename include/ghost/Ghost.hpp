@@ -13,7 +13,7 @@
 
 class Ghost : public Util::GameObject {
 public:
-    explicit Ghost(const std::string &name, std::vector<std::vector<int>> map) : map(map){
+    explicit Ghost(std::string name, std::vector<std::vector<int>> map, glm::vec2 initPosotion) : initPosotion(initPosotion), map(map){
         normalGhost = new GhostNormalState();
         deadGhost = new GhostDeadState();
         vulnerableGhost = new GhostVulnerableState();
@@ -40,6 +40,7 @@ public:
         ghostState = normalGhost;
         SetZIndex(15);
         SetVisible(true);
+        SetPosition(initPosotion);
         SetDrawable(ghostState->GetUpImages());
     }
 
@@ -64,6 +65,7 @@ public:
 
     void ReStart(){
         this->ghostState = normalGhost;
+        SetPosition(initPosotion);
     }
 
     void MoveUp() {
@@ -176,6 +178,7 @@ public:
 private:
 
     glm::vec2 targetPosition = {0, 0};
+    glm::vec2 initPosotion;
 
     std::vector<glm::vec2> road;
     std::vector<std::vector<int>> map;

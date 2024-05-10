@@ -104,6 +104,13 @@ void App::Update() {
     if (pacman->IsDead() && pacman->IfAnimationEnds()) {
         pacman->ReStart();
         pacman->setNextDirection(Pacman::Direction::left);
+        for(const auto& ghost : ghosts){
+            ghost.second->ReStart();
+            ghost.second->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
+            ghost.second->shortestPath(
+                map->changeToPositionInVector(ghost.second->GetPosition())
+            );
+        }
     }
 
     for (auto & ghost : ghosts) {
