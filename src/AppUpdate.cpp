@@ -179,7 +179,9 @@ void App::Update() {
     }
 
     for (auto & ghost : ghosts) {
-        ghost.second->move();
+        if(!pacman->IsDead()){
+            ghost.second->move();
+        }
     }
 
 
