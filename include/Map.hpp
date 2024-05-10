@@ -20,11 +20,21 @@ public:
                 double positionX = (j * pixel) - x_transfer;
                 double positionY = ((n - i + 1) * pixel) - y_transfer;
 
-                std::shared_ptr<Block> block = std::make_shared<Block>(
-                    this->Mapper.at(map_by_number[i][j]),
-                    map_by_number[i][j],
-                    i, j
-                );
+                std::shared_ptr<Block> block;
+                if (43 == map_by_number[i][j]) {
+                    block = std::make_shared<Block>(
+                        std::vector<std::string>{this->Mapper.at(map_by_number[i][j]), "small_ball"},
+                        map_by_number[i][j],
+                        i, j
+                    );
+                }else{
+                    block = std::make_shared<Block>(
+                        this->Mapper.at(map_by_number[i][j]),
+                        map_by_number[i][j],
+                        i, j
+                    );
+                }
+
                 block->SetPosition({positionX, positionY});
                 this->AddChild(block);
 
@@ -54,21 +64,21 @@ public:
         }
     }
 
-    bool printAAA(){
-        for(int i = 0; i < 28; i++){
-            std::cout << i << " ";
-        }
-        std::cout << "\n";
-        int i = 0;
-        for (std::vector<int> row : ghostMap){
-            std::cout << i << ": ";
-            for(int road : row){
-                std::cout << road << " ";
-            }
-            i++;
-            std::cout << "\n";
-        }
-    }
+//    bool printAAA(){
+//        for(int i = 0; i < 28; i++){
+//            std::cout << i << " ";
+//        }
+//        std::cout << "\n";
+//        int i = 0;
+//        for (std::vector<int> row : ghostMap){
+//            std::cout << i << ": ";
+//            for(int road : row){
+//                std::cout << road << " ";
+//            }
+//            i++;
+//            std::cout << "\n";
+//        }
+//    }
 
     bool IsPacmanRoad(const glm::vec2 &Position) {
         auto it = find_if(pacmanRoads.begin(), pacmanRoads.end(),

@@ -11,6 +11,15 @@ public:
         positionInVector = {positionInVectorX, positionInVectorY};
     }
 
+    explicit Block(const std::vector<std::string> blockNames, int codeNumber, int positionInVectorX, int positionInVectorY) : name(std::move(blockNames[0])), codeNumber(codeNumber) {
+        std::shared_ptr<Core::Drawable> DEAD = std::make_shared<Util::Animation>(
+            std::vector<std::string>{RESOURCE_DIR"/Image/Map_Blocks/" + blockNames.at(0) + ".png" , RESOURCE_DIR"/Image/Map_Blocks/" + blockNames.at(1) + ".png"},
+            true, 400, true, 0);
+        SetDrawable(DEAD);
+        m_Transform.translation = {0, 0};
+        positionInVector = {positionInVectorX, positionInVectorY};
+    }
+
     [[nodiscard]] const std::string &GetImagePath() const { return imagePath; }
 
     [[nodiscard]] const glm::vec2 &GetPosition() const { return m_Transform.translation; }
