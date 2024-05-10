@@ -47,6 +47,13 @@ private:
     std::shared_ptr<Ghost> inky;
     std::shared_ptr<Ghost> clyde;
 
+    std::map<std::string, std::shared_ptr<Ghost>> ghosts ={
+        {"blinky",blinky},
+        {"pinky",pinky},
+        {"inky",inky},
+        {"clyde",clyde}
+    };
+
     std::shared_ptr<Pacman> pacman;
 
 

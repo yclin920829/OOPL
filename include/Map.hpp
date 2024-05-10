@@ -26,7 +26,6 @@ public:
                     i, j
                 );
                 block->SetPosition({positionX, positionY});
-                std::cout << block->GetPosition().x << block->GetPosition().y << "(" << block->GetCodeNumber() << ")" << " ";
                 this->AddChild(block);
 
                 if (0 == map_by_number[i][j]) {
@@ -51,10 +50,8 @@ public:
                 }
 
             }
-            std::cout << "\n";
             ghostMap.push_back(row);
         }
-        printAAA();
     }
 
     bool printAAA(){
