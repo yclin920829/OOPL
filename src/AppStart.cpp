@@ -63,39 +63,14 @@ void App::Start() {
     fruitSystem->SetSystemPosition({240, -216});
     root.AddChild(fruitSystem);
 
+    ghosts.at("blinky") = std::make_shared<Ghost>("blinky", map->GetGhostMap(), glm::vec2{0.0, 104});
+    ghosts.at("pinky") = std::make_shared<Ghost>("pinky", map->GetGhostMap(), glm::vec2{-32, 56});
+    ghosts.at("inky") = std::make_shared<Ghost>("inky", map->GetGhostMap(), glm::vec2{-16.0, 56});
+    ghosts.at("clyde") = std::make_shared<Ghost>("clyde", map->GetGhostMap(), glm::vec2{16.0, 56});
 
-    VulnerableGhostsImages = {
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_01.png",
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_B_02.png",
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_01.png",
-        RESOURCE_DIR"/Image/Character/VulnerableGhosts/VulnerableGhosts_W_02.png"
-    };
-
-    for (std::map<std::string, std::shared_ptr<Ghost>>::iterator it = ghosts.begin(); it != ghosts.end(); it++) {
-        (*it).second = std::make_shared<Ghost>((*it).first, map->GetGhostMap());
+    for (auto & ghost : ghosts) {
+        root.AddChild(ghost.second);
     }
-//    blinky = std::make_shared<Ghost>("blinky", map->GetGhostMap());
-//    pinky = std::make_shared<Ghost>("pinky", map->GetGhostMap());
-//    inky = std::make_shared<Ghost>("inky", map->GetGhostMap());
-//    clyde = std::make_shared<Ghost>("clyde", map->GetGhostMap());
-    ghosts.at("blinky")->SetPosition({-0.0, 104});
-    ghosts.at("pinky")->SetPosition({-40.0, 56});
-    ghosts.at("inky")->SetPosition({-16.0, 56});
-    ghosts.at("clyde")->SetPosition({16.0, 56});
-
-    root.AddChild(ghosts.at("blinky"));
-    root.AddChild(ghosts.at("pinky"));
-    root.AddChild(ghosts.at("inky"));
-    root.AddChild(ghosts.at("clyde"));
-
-//    blinky->SetPosition({-0.0, 104});
-//    pinky->SetPosition({-40.0, 56});
-//    inky->SetPosition({-16.0, 56});
-//    clyde->SetPosition({16.0, 56});
-//    root.AddChild(blinky);
-//    root.AddChild(pinky);
-//    root.AddChild(inky);
-//    root.AddChild(clyde);
 
     std::vector<std::string> deadImages;
     deadImages.reserve(13);
@@ -122,38 +97,12 @@ void App::Start() {
     pacman->Start();
     root.AddChild(pacman);
 
-    ghosts.at("pinky")->SetPosition({-32, 56});
-    for (std::map<std::string, std::shared_ptr<Ghost>>::iterator it = ghosts.begin(); it != ghosts.end(); it++) {
-        (*it).second->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
-        (*it).second->shortestPath(
-            map->changeToPositionInVector((*it).second->GetPosition())
+    for (auto & ghost : ghosts) {
+        ghost.second->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
+        ghost.second->shortestPath(
+            map->changeToPositionInVector(ghost.second->GetPosition())
         );
     }
-
-
-    
-//    blinky->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
-//    blinky->shortestPath(
-//        map->changeToPositionInVector(blinky->GetPosition())
-//    );
-//
-//
-//    pinky->SetPosition({-32, 56});
-//    pinky->SetTargetPosition(map->changeToPositionInVector({192, 248}));
-//    pinky->shortestPath(
-//        map->changeToPositionInVector(pinky->GetPosition())
-//    );
-//
-//    inky->SetTargetPosition(map->changeToPositionInVector({-208, -200}));
-//    inky->shortestPath(
-//        map->changeToPositionInVector(inky->GetPosition())
-//    );
-//
-//    clyde->SetTargetPosition(map->changeToPositionInVector({192, -200}));
-//    clyde->shortestPath(
-//        map->changeToPositionInVector(clyde->GetPosition())
-//    );
-
 
     m_CurrentState = State::UPDATE;
 }
