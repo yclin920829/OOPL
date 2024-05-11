@@ -9,6 +9,7 @@
 
 #include "Util/Renderer.hpp"
 #include "Map.hpp"
+#include "LevelBuilder.hpp"
 
 class App {
 public:
@@ -60,6 +61,8 @@ private:
     std::vector<std::string> VulnerableGhostsImages;
 
     int time = 0;
+
+    LevelBuilder levelBuilder;
 };
 
 #endif
