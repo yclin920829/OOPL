@@ -9,16 +9,16 @@
 
 class Map : public Util::GameObject {
 public:
-    explicit Map(const int m, const int n, std::vector<std::vector<int>> map_by_number) {
-        double x_transfer = (pixel / 2) * m;
-        double y_transfer = (pixel / 2) * n;
+    explicit Map(const glm::vec2 size, std::vector<std::vector<int>> map_by_number) {
+        double x_transfer = (pixel / 2) * size.x;
+        double y_transfer = (pixel / 2) * size.y;
         std::vector<int> row;
 
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < size.y; ++i) {
             row.clear();
-            for (int j = 0; j < m; ++j) {
+            for (int j = 0; j < size.x; ++j) {
                 double positionX = (j * pixel) - x_transfer;
-                double positionY = ((n - i + 1) * pixel) - y_transfer;
+                double positionY = ((size.y - i + 1) * pixel) - y_transfer;
 
                 std::shared_ptr<Block> block;
                 if (43 == map_by_number[i][j]) {
