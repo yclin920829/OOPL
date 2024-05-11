@@ -77,7 +77,7 @@ void App::Update() {
     for (const std::shared_ptr<Block> &bean: map->GetLargeBeans()) {
         if (pacman->eatBean(bean) && bean->GetVisibility()) {
             bean->SetVisible(false);
-            for (auto & ghost : ghosts) {
+            for (auto &ghost: ghosts) {
                 ghost.second->Vulnerable();
             }
             pacman->HandleScoreUpCollision(75);
@@ -104,7 +104,7 @@ void App::Update() {
     if (pacman->IsDead() && pacman->IfAnimationEnds()) {
         pacman->ReStart();
         pacman->setNextDirection(Pacman::Direction::left);
-        for(const auto& ghost : ghosts){
+        for (const auto &ghost: ghosts) {
             ghost.second->ReStart();
             ghost.second->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
             ghost.second->shortestPath(
@@ -113,7 +113,7 @@ void App::Update() {
         }
     }
 
-    for (auto & ghost : ghosts) {
+    for (auto &ghost: ghosts) {
         if (!pacman->IsDead() && pacman->IfCollidesGhost(ghost.second)) {
             if (ghost.second->GetState() == "Normal") {
                 pacman->Dead();
@@ -127,7 +127,7 @@ void App::Update() {
     std::mt19937 gen(rd());
 
     if (ghosts.at("blinky")->IsArrivePosition()) {
-        if (ghosts.at("blinky")->GetState() == "Dead"){
+        if (ghosts.at("blinky")->GetState() == "Dead") {
             ghosts.at("blinky")->ReStart();
         }
         ghosts.at("blinky")->SetTargetPosition(map->changeToPositionInVector(
@@ -174,7 +174,7 @@ void App::Update() {
         );
     }
 
-    for (auto & ghost : ghosts) {
+    for (auto &ghost: ghosts) {
         if (ghost.second->GetState() == "Dead") {
             ghost.second->SetTargetPosition(map->changeToPositionInVector(
                 {-16, 56}
@@ -185,16 +185,16 @@ void App::Update() {
         }
     }
 
-    for (auto & ghost : ghosts) {
-        if(!pacman->IsDead()){
+    for (auto &ghost: ghosts) {
+        if (!pacman->IsDead()) {
             ghost.second->move();
         }
     }
 
 
     time++;
-    for (auto & ghost : ghosts) {
-        if(time % (15 * 10) == 0){
+    for (auto &ghost: ghosts) {
+        if (time % (15 * 10) == 0) {
             if (ghost.second->GetState() == "Vulnerable") {
                 ghost.second->ReStart();
             }
