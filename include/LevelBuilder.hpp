@@ -46,6 +46,14 @@ public:
         return glm::vec2{json["fruitSystemPosition"]["X"].get<int>(), json["fruitSystemPosition"]["Y"].get<int>()};
     }
 
+    glm::vec2 getGameScorePosition() {
+        return glm::vec2{json["gameScorePosition"]["X"].get<int>(), json["gameScorePosition"]["Y"].get<int>()};
+    }
+
+    glm::vec2 getHightScorePosition() {
+        return glm::vec2{json["hightScorePosition"]["X"].get<int>(), json["hightScorePosition"]["Y"].get<int>()};
+    }
+
 private:
     Json json;
 };

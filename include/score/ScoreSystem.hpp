@@ -10,20 +10,24 @@
 class ScoreSystem : public Util::GameObject{
 public:
 
-    explicit ScoreSystem(EventManager * eventManager): eventManager(eventManager){
+    explicit ScoreSystem(glm::vec2 gameScorePosition, glm::vec2 hightScorePosition){
+        NowScore = std::make_shared<Score>(gameScorePosition);
+        NowScore -> SetImage((RESOURCE_DIR"/Image/Out_Map/game_score.png"));
+        this->AddChild(NowScore);
+
+        HighestScore = std::make_shared<Score>(hightScorePosition);
+        HighestScore -> SetImage((RESOURCE_DIR"/Image/Out_Map/high_score.png"));
+        this->AddChild(HighestScore);
+    }
+
+    void AddEventManager(EventManager *eventManager) {
         eventManager->addListener(COLLISION_TO_ADD_SCORE, std::bind(&ScoreSystem::onEvent, this, std::placeholders::_1, std::placeholders::_2));
-    };
+    }
 
     void onEvent(EventType eventType, const EventData& eventData){
         if (eventType == COLLISION_TO_ADD_SCORE) {
             HandleScoreLogic(eventData.quantity);
         }
-    }
-
-    void InitialScoreSystem() {
-        this->nowScore = 0;
-        this->highestScore = 0;
-        ScoreCreate();
     }
 
     void HandleScoreLogic(int quantity){
@@ -46,39 +50,13 @@ public:
         this -> highestScore = 0;
     }
 
-
-    void ScoreCreate() {
-        NowScore = std::make_shared<Score>();
-        NowScore -> SetPosition({-294, 208});
-        NowScore -> SetImage((RESOURCE_DIR"/Image/Out_Map/game_score.png"));
-        NowScore -> NumberInitial();
-        this->AddChild(NowScore);
-
-
-        HighestScore = std::make_shared<Score>();
-        HighestScore -> SetPosition({284,208});
-        HighestScore -> SetImage((RESOURCE_DIR"/Image/Out_Map/high_score.png"));
-        HighestScore -> NumberInitial();
-        this->AddChild(HighestScore);
-    }
-
-    void SetNowXY(float xMin, float yMax, float xMax) {
-        this->xMin = xMin;
-        this->xMax = xMax;
-        this->yMax = yMax;
-    };
-
-
 private:
 
-    int nowLevel = 0;
     std::vector<int> highScore;
-    float xMin, yMax, xMax;
     int highestScore = 0;
     int nowScore = 0;
 
-    EventManager * eventManager;
-    std::shared_ptr<Score> HighestScore,NowScore;
+    std::shared_ptr<Score> NowScore, HighestScore;
 
 };
 

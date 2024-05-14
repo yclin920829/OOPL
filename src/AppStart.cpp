@@ -20,10 +20,8 @@ void App::Start() {
     fruitSystem = std::make_shared<FruitSystem>(levelBuilder.getFruitSystemPosition());
     root.AddChild(fruitSystem);
 
-    //初始化scoreSystem
-    scoreSystem = std::make_shared<ScoreSystem>(eventManager);
-    scoreSystem->SetNowXY(-224, 208, 264);
-    scoreSystem->InitialScoreSystem();
+    scoreSystem = std::make_shared<ScoreSystem>(levelBuilder.getGameScorePosition(), levelBuilder.getHightScorePosition());
+    scoreSystem->AddEventManager(eventManager);
     root.AddChild(scoreSystem);
 
 

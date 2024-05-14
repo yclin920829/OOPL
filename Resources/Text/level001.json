@@ -45,6 +45,15 @@
     "fruitSystemPosition":{
         "X": 240,
         "Y": -216
+    },
+    "gameScorePosition":{
+        "X": -294,
+        "Y": 208
+    },
+    "hightScorePosition":{
+        "X": 284,
+        "Y": 208
     }
+
 }
 

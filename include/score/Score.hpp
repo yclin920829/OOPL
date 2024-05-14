@@ -2,100 +2,40 @@
 #define REPLACE_WITH_YOUR_PROJECT_NAME_SCORE_HPP
 
 #include "Util/GameObject.hpp"
-#include "Util/Image.hpp"
 #include "score/Number.hpp"
 #include <vector>
 
 class Score : public Util::GameObject {
 public:
-    explicit Score()=default;
-
+    explicit Score(const glm::vec2& Position) {
+        m_Transform.translation = Position;
+        digits.resize(5);
+        for (int i = 0; i < digits.size(); ++i) {
+            digits[i] = std::make_shared<Number>();
+            digits[i]->SetPosition({GetPosition().x, GetPosition().y - float(i + 1) * 28 - 25});
+            digits[i]->SetImage((RESOURCE_DIR"/Image/Out_Map/0.png"));
+            this->AddChild(digits[i]);
+        }
+    };
 
     void SetImage(const std::string& ImagePath){
         m_Drawable = std::make_shared<Util::Image>(ImagePath);
     };
 
-    void SetPosition(const glm::vec2& Position) { m_Transform.translation = Position; };
+    [[nodiscard]] const glm::vec2& GetPosition() const { return m_Transform.translation; }
 
     void SetScore(int score){
-        this->score = score;
-        SetNumbers();
+        std::vector<int> nums(5, 0);
+
+        for (int i = 4; i >= 0 && score > 0; i--) {
+            nums[i] = score % 10;
+            score /= 10;
+            digits.at(i) -> SetScore(nums[i]);
+        }
     };
 
-    void SetNumbers(){
-        std::vector<int> digits = splitDigits(score);
-        TenThousandDigit -> SetScore(digits[0]);
-        ThousandDigit -> SetScore(digits[1]);
-        HundredDigit ->SetScore(digits[2]);
-        TenDigit -> SetScore(digits[3]);
-        UnitDigit -> SetScore(digits[4]);
-    }
-
-    void NumberInitial(){
-
-        score = 0;
-
-        glm::vec2 Position_TenThousandDigit = m_Transform.translation;
-        Position_TenThousandDigit.y = Position_TenThousandDigit.y - 53;
-        TenThousandDigit = std::make_shared<Number>();
-        TenThousandDigit -> SetPosition(Position_TenThousandDigit);
-        TenThousandDigit -> SetImage((RESOURCE_DIR"/Image/Out_Map/0.png"));
-        this->AddChild(TenThousandDigit);
-
-        glm::vec2 Position_ThousandDigit = Position_TenThousandDigit;
-        Position_ThousandDigit.y = Position_ThousandDigit.y - 28;
-        ThousandDigit = std::make_shared<Number>();
-        ThousandDigit -> SetPosition(Position_ThousandDigit);
-        ThousandDigit -> SetImage((RESOURCE_DIR"/Image/Out_Map/0.png"));
-        this->AddChild(ThousandDigit);
-
-        glm::vec2 Position_HundredDigit = Position_ThousandDigit;
-        Position_HundredDigit.y = Position_HundredDigit.y - 28;
-        HundredDigit = std::make_shared<Number>();
-        HundredDigit -> SetPosition(Position_HundredDigit);
-        HundredDigit -> SetImage((RESOURCE_DIR"/Image/Out_Map/0.png"));
-        this->AddChild(HundredDigit);
-
-        glm::vec2 Position_TenDigit = Position_HundredDigit;
-        Position_TenDigit.y = Position_TenDigit.y - 28;
-        TenDigit = std::make_shared<Number>();
-        TenDigit -> SetPosition(Position_TenDigit);
-        TenDigit -> SetImage((RESOURCE_DIR"/Image/Out_Map/0.png"));
-        this->AddChild(TenDigit);
-
-        glm::vec2 Position_UnitDigit = Position_TenDigit;
-        Position_UnitDigit.y = Position_UnitDigit.y - 28;
-        UnitDigit = std::make_shared<Number>();
-        UnitDigit -> SetPosition(Position_UnitDigit);
-        UnitDigit -> SetImage((RESOURCE_DIR"/Image/Out_Map/0.png"));
-        this->AddChild(UnitDigit);
-
-    }
-
-    std::vector<int> splitDigits(int input) {
-        std::vector<int> digits;
-
-        while (input > 0) {
-            int digit = input % 10;
-            digits.push_back(digit);
-            input /= 10;
-        }
-
-        while (digits.size() < 5) {
-            digits.push_back(0);
-        }
-
-        std::reverse(digits.begin(), digits.end());
-
-        return digits;
-    }
-
 private:
-
-    int score;
-
-    std::shared_ptr<Number> UnitDigit, TenDigit, HundredDigit, ThousandDigit, TenThousandDigit;
-
+    std::vector<std::shared_ptr<Number>> digits;
 };
 
 #endif //REPLACE_WITH_YOUR_PROJECT_NAME_SCORE_HPP
