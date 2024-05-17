@@ -115,10 +115,6 @@ public:
         }
     }
 
-    std::vector<std::vector<int>> GetGhostMap() {
-        return ghostMap;
-    }
-
     [[nodiscard]] const std::vector<std::shared_ptr<Block>> &GetSmallBeans() const {
         return smallBeans;
     }

@@ -202,7 +202,7 @@ void App::Update() {
     }
 
 
-    if (lifeSystem->IsDone()) m_CurrentState = State::END;
+//    if (lifeSystem->IsDone()) m_CurrentState = State::END;
 
     /*
      * Do not touch the code below as they serve the purpose for

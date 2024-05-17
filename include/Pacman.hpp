@@ -10,15 +10,20 @@
 
 class Pacman : public Util::GameObject {
 public:
-    explicit Pacman(EventManager * eventManager) : eventManager(eventManager){
-        this->eventManager = eventManager;
+    explicit Pacman() {
+        SetZIndex(20);
+        SetVisible(true);
         dead= false;
     };
+
+    void AddEventManager(EventManager *eventManager){
+        this->eventManager = eventManager;
+    }
 
     enum Direction { up, down, right, left, none };
 
     void HandleCollision(int damage = 1){
-        CollisionEventData eventData;
+        CollisionEventData eventData{};
         eventData.damage = damage;
         eventManager->notify(COLLISION_WITH_GHOST_EVENT_NOT_INVINCIBLE, eventData);
     }//處理扣血
@@ -93,7 +98,7 @@ public:
         dead = true;
     }
 
-    bool IfAnimationEnds() const {
+    [[nodiscard]] bool IfAnimationEnds() const {
         auto animation = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
         return animation->GetCurrentFrameIndex() == animation->GetFrameCount() - 1;
     };
@@ -113,7 +118,7 @@ public:
         return (GetPosition() == bean->GetPosition());
     }
 
-    bool IsDead() const {
+    [[nodiscard]] bool IsDead() const {
         return dead;
     }
 
@@ -178,7 +183,7 @@ public:
     }
 
 private:
-    EventManager * eventManager;
+    EventManager * eventManager{};
     std::shared_ptr<Core::Drawable> UP;
     std::shared_ptr<Core::Drawable> DOWN;
     std::shared_ptr<Core::Drawable> RIGHT;

@@ -17,9 +17,11 @@ public:
 
     void Print() {
         LOG_DEBUG("mapSize: ({}, {})", json["mapSize"]["X"].get<int>(), json["mapSize"]["Y"].get<int>());
-        LOG_DEBUG("lifeSystemPosition: ({}, {})", json["lifeSystemPosition"]["X"].get<int>(), json["lifeSystemPosition"]["Y"].get<int>());
+        LOG_DEBUG("lifeSystemPosition: ({}, {})", json["lifeSystemPosition"]["X"].get<int>(),
+                  json["lifeSystemPosition"]["Y"].get<int>());
         LOG_DEBUG("lifeSystemHitPoint: {}", json["lifeSystemHitPoint"].get<int>());
-        LOG_DEBUG("fruitSystemPosition: ({}, {})", json["fruitSystemPosition"]["X"].get<int>(), json["fruitSystemPosition"]["Y"].get<int>());
+        LOG_DEBUG("fruitSystemPosition: ({}, {})", json["fruitSystemPosition"]["X"].get<int>(),
+                  json["fruitSystemPosition"]["Y"].get<int>());
     }
 
     std::string getLevelName() {
@@ -35,7 +37,7 @@ public:
     }
 
     glm::vec2 getLifeSystemPosition() {
-        return glm::vec2{json["lifeSystemPosition"]["X"].get<int>(), json["lifeSystemPosition"]["Y"].get<int>()};
+        return glm::vec2{json["lifeSystemPosition"]["X"].get<float>(), json["lifeSystemPosition"]["Y"].get<float>()};
     }
 
     int getLifeSystemHitPoint() {
@@ -43,15 +45,75 @@ public:
     }
 
     glm::vec2 getFruitSystemPosition() {
-        return glm::vec2{json["fruitSystemPosition"]["X"].get<int>(), json["fruitSystemPosition"]["Y"].get<int>()};
+        return glm::vec2{json["fruitSystemPosition"]["X"].get<float>(), json["fruitSystemPosition"]["Y"].get<float>()};
     }
 
     glm::vec2 getGameScorePosition() {
-        return glm::vec2{json["gameScorePosition"]["X"].get<int>(), json["gameScorePosition"]["Y"].get<int>()};
+        return glm::vec2{json["gameScorePosition"]["X"].get<float>(), json["gameScorePosition"]["Y"].get<float>()};
     }
 
     glm::vec2 getHightScorePosition() {
-        return glm::vec2{json["hightScorePosition"]["X"].get<int>(), json["hightScorePosition"]["Y"].get<int>()};
+        return glm::vec2{json["hightScorePosition"]["X"].get<float>(), json["hightScorePosition"]["Y"].get<float>()};
+    }
+
+    std::vector<std::string> getGhostNames(){
+        return json["ghostName"].get<std::vector<std::string>>();
+    }
+
+    std::vector<glm::vec2> getGhostInitialPosition(){
+        std::vector<glm::vec2> positions;
+        for(std::vector<float> position : json["ghostInitialPosition"].get<std::vector<std::vector<float>>>()){
+            positions.push_back(glm::vec2{position.at(0), position.at(1)});
+        }
+        return positions;
+    }
+
+    std::vector<std::vector<int>> getGhostBFSMap() {
+        return json["ghostBFSMap"].get<std::vector<std::vector<int>>>();
+    }
+
+    std::vector<std::string> getPacmanDeadImages() {
+        std::vector<std::string> paths;
+        for (std::string path: json["pacmanDeadImages"].get<std::vector<std::string>>()) {
+            paths.push_back(RESOURCE_DIR + path);
+        }
+        return paths;
+    }
+
+    std::vector<std::string> getPacmanUpImages(){
+        std::vector<std::string> paths;
+        for (std::string path: json["pacmanUpImages"].get<std::vector<std::string>>()) {
+            paths.push_back(RESOURCE_DIR + path);
+        }
+        return paths;
+    }
+
+    std::vector<std::string> getPacmanDownImages(){
+        std::vector<std::string> paths;
+        for (std::string path: json["pacmanDownImages"].get<std::vector<std::string>>()) {
+            paths.push_back(RESOURCE_DIR + path);
+        }
+        return paths;
+    }
+
+    std::vector<std::string> getPacmanRightImages(){
+        std::vector<std::string> paths;
+        for (std::string path: json["pacmanRightImages"].get<std::vector<std::string>>()) {
+            paths.push_back(RESOURCE_DIR + path);
+        }
+        return paths;
+    }
+
+    std::vector<std::string> getPacmanLeftImages(){
+        std::vector<std::string> paths;
+        for (std::string path: json["pacmanLeftImages"].get<std::vector<std::string>>()) {
+            paths.push_back(RESOURCE_DIR + path);
+        }
+        return paths;
+    }
+
+    glm::vec2 getPacmanPosition(){
+        return glm::vec2{json["pacmanPosition"]["X"].get<float>(), json["pacmanPosition"]["Y"].get<float>()};
     }
 
 private:
