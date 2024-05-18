@@ -12,6 +12,10 @@ int main(int, char**) {
                 app.Start();
                 break;
 
+            case App::State::UI:
+                app.UIUpdate();
+                break;
+
             case App::State::UPDATE:
                 app.Update();
                 break;

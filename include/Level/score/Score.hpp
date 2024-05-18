@@ -3,7 +3,7 @@
 
 #include "Util/GameObject.hpp"
 #include "Util/Image.hpp"
-#include "score/Number.hpp"
+#include "Number.hpp"
 #include <vector>
 
 class Score : public Util::GameObject {

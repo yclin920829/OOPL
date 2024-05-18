@@ -3,10 +3,10 @@
 
 #include "Util/GameObject.hpp"
 #include "Util/Animation.hpp"
-#include "Block.hpp"
-#include "ghost/Ghost.hpp"
+#include "Level/map/Block.hpp"
+#include "Level/ghost/Ghost.hpp"
 #include "event/EventManager.hpp"
-#include "fruit/Fruit.hpp"
+#include "Level/fruit/Fruit.hpp"
 
 class Pacman : public Util::GameObject {
 public:

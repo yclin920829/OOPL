@@ -5,7 +5,7 @@
 #include "event/EventType.hpp"
 #include "Util/GameObject.hpp"
 #include "Util/Logger.hpp"
-#include "life/Life.hpp"
+#include "Life.hpp"
 #include "App.hpp"
 
 class LifeSystem : public Util::GameObject {

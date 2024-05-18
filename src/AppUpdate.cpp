@@ -257,7 +257,7 @@ void App::Update() {
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
         Util::Input::IfExit()) {
         m_CurrentState = State::END;
-    }
+    }//改到在UI按ESC才有到END，在這按ESC是回UI
 
     root.Update();
 }

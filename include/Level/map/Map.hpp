@@ -39,7 +39,7 @@ public:
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
                     row.push_back(1);
-                } else if (42 == map_by_number[i][j]) {
+                } else if (42 == map_by_number[i][j]) {//傳送點
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
                     row.push_back(1);
@@ -54,7 +54,7 @@ public:
             std::cout << "\n";
             ghostMap.push_back(row);
         }
-        printAAA();
+        //printAAA();
     }
 
     bool printAAA(){
@@ -177,7 +177,17 @@ private:
         {40, "in_game_blue"},
         {41, "in_respawn_black"},
         {42, "in_game_black"},
-        {43, "large_ball"}
+        {43, "large_ball"},
+        {44, "upper_left_open_border"},//新加的
+        {45, "upper_right_open_border"},
+        {46, "lower_left_open_border"},
+        {47, "lower_right_open_border"},
+        {48, "left_upper_open_border"},
+        {49, "left_lower_open_border"},
+        {50, "right_upper_open_border"},
+        {51, "right_lower_open_border"},
+        {52, "transfer_black"}
+
     };
 };
 
