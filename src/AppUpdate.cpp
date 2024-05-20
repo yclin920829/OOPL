@@ -96,7 +96,7 @@ void App::Update() {
         fruitSystem->getCherry()->SetVisible(true);
     }
 
-    if (pacman->IsCollidesFruit(fruitSystem->getCherry()) && fruitSystem->getCherry()->GetVisibility()) {
+    if (pacman->IsCollides(fruitSystem->getCherry()) && fruitSystem->getCherry()->GetVisibility()) {
         fruitSystem->getCherry()->SetVisible(false);
         pacman->HandleScoreUpCollision(100);
     }
@@ -114,7 +114,7 @@ void App::Update() {
     }
 
     for (auto &ghost: ghosts) {
-        if (!pacman->IsDead() && pacman->IfCollidesGhost(ghost.second)) {
+        if (!pacman->IsDead() && pacman->IsCollides(ghost.second)) {
             if (ghost.second->GetState() == "Normal") {
                 pacman->Dead();
             } else if (ghost.second->GetState() == "Vulnerable") {

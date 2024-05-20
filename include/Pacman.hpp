@@ -122,7 +122,7 @@ public:
         return dead;
     }
 
-    [[nodiscard]] bool IfCollidesGhost(const std::shared_ptr<Ghost> &other) const {
+    [[nodiscard]] bool IsCollides(const std::shared_ptr<GameObject> &other) const {
         float thisHalfWidth = this->GetScaledSize().x / 2;
         float thisHalfHeight = this->GetScaledSize().y / 2;
         float otherHalfWidth = other->GetScaledSize().x / 2;
@@ -133,32 +133,10 @@ public:
         float thisMinY = this->GetPosition().y - thisHalfHeight;
         float thisMaxY = this->GetPosition().y + thisHalfHeight;
 
-        float otherMinX = other->GetPosition().x - otherHalfWidth;
-        float otherMaxX = other->GetPosition().x + otherHalfWidth;
-        float otherMinY = other->GetPosition().y - otherHalfHeight;
-        float otherMaxY = other->GetPosition().y + otherHalfHeight;
-
-        bool collisionX = (thisMinX <= otherMaxX) && (thisMaxX >= otherMinX);
-        bool collisionY = (thisMinY <= otherMaxY) && (thisMaxY >= otherMinY);
-
-        return collisionX && collisionY;
-    }
-
-    [[nodiscard]] bool IsCollidesFruit(const std::shared_ptr<Fruit> &other) const {
-        float thisHalfWidth = this->GetScaledSize().x / 2;
-        float thisHalfHeight = this->GetScaledSize().y / 2;
-        float otherHalfWidth = other->GetScaledSize().x / 2;
-        float otherHalfHeight = other->GetScaledSize().y / 2;
-
-        float thisMinX = this->GetPosition().x - thisHalfWidth;
-        float thisMaxX = this->GetPosition().x + thisHalfWidth;
-        float thisMinY = this->GetPosition().y - thisHalfHeight;
-        float thisMaxY = this->GetPosition().y + thisHalfHeight;
-
-        float otherMinX = other->GetPosition().x - otherHalfWidth;
-        float otherMaxX = other->GetPosition().x + otherHalfWidth;
-        float otherMinY = other->GetPosition().y - otherHalfHeight;
-        float otherMaxY = other->GetPosition().y + otherHalfHeight;
+        float otherMinX = other->GetTransform().translation.x - otherHalfWidth;
+        float otherMaxX = other->GetTransform().translation.x + otherHalfWidth;
+        float otherMinY = other->GetTransform().translation.y - otherHalfHeight;
+        float otherMaxY = other->GetTransform().translation.y + otherHalfHeight;
 
         bool collisionX = (thisMinX <= otherMaxX) && (thisMaxX >= otherMinX);
         bool collisionY = (thisMinY <= otherMaxY) && (thisMaxY >= otherMinY);
