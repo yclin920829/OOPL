@@ -185,31 +185,6 @@ void App::Update() {
             std::random_device rd;
             std::mt19937 gen(rd());
 
-    if (ghosts.at("blinky")->IsArrivePosition()) {
-        if (ghosts.at("blinky")->GetState() == "Dead") {
-            ghosts.at("blinky")->ReStart();
-        }
-        ghosts.at("blinky")->SetTargetPosition(map->changeToPositionInVector(
-//            pacman->GetPosition()
-            map->GetGhostRoad()[gen() % map->GetGhostRoad().size()]->GetPosition()
-        ));
-        ghosts.at("blinky")->shortestPath(
-            map->changeToPositionInVector(ghosts.at("blinky")->GetPosition())
-        );
-    }
-
-    if (ghosts.at("pinky")->IsArrivePosition()) {
-        if (ghosts.at("pinky")->GetState() == "Dead")ghosts.at("pinky")->ReStart();
-        unsigned num = gen() % map->GetSmallBeans().size();
-        while (!map->GetSmallBeans()[num]->GetVisibility()) {
-            num = gen() % map->GetSmallBeans().size();
-        }
-        ghosts.at("pinky")->SetTargetPosition(map->changeToPositionInVector(
-            map->GetSmallBeans()[num]->GetPosition()
-        ));
-        ghosts.at("pinky")->shortestPath(
-            map->changeToPositionInVector(ghosts.at("pinky")->GetPosition())
-        );
             unsigned num = gen() % map->GetSmallBeans().size();
             while (!map->GetSmallBeans()[num]->GetVisibility()) {
                 num = gen() % map->GetSmallBeans().size();
