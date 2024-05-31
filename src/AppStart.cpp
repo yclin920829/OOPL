@@ -46,12 +46,5 @@ void App::Start() {
     pacman->Start();
     root.AddChild(pacman);
 
-    for (auto &ghost: ghosts) {
-        ghost.second->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
-        ghost.second->shortestPath(
-            map->changeToPositionInVector(ghost.second->GetPosition())
-        );
-    }
-
     m_CurrentState = State::UPDATE;
 }
