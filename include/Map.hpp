@@ -1,11 +1,13 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 
-#include <vector>
 #include <map>
+#include <vector>
+#include <format>
+#include <iomanip>
 
-#include "Util/GameObject.hpp"
 #include "Block.hpp"
+#include "Util/GameObject.hpp"
 
 class Map : public Util::GameObject {
 public:
@@ -13,9 +15,11 @@ public:
         double x_transfer = (pixel / 2) * size.x;
         double y_transfer = (pixel / 2) * size.y;
         std::vector<int> row;
+        std::vector<std::shared_ptr<Block>> printRow;
 
         for (int i = 0; i < size.y; ++i) {
             row.clear();
+            printRow.clear();
             for (int j = 0; j < size.x; ++j) {
                 double positionX = (j * pixel) - x_transfer;
                 double positionY = ((size.y - i + 1) * pixel) - y_transfer;
@@ -27,7 +31,7 @@ public:
                         map_by_number[i][j],
                         i, j
                     );
-                }else{
+                } else {
                     block = std::make_shared<Block>(
                         this->Mapper.at(map_by_number[i][j]),
                         map_by_number[i][j],
@@ -55,30 +59,80 @@ public:
                 }else if (19 == map_by_number[i][j] || 41 == map_by_number[i][j]){
                     ghostRoads.push_back(block);
                     row.push_back(1);
-                }else{
+                } else {
                     row.push_back(0);
                 }
-
+                printRow.push_back(block);
             }
             ghostMap.push_back(row);
+            printMap.push_back(printRow);
         }
     }
 
-//    bool printAAA(){
-//        for(int i = 0; i < 28; i++){
-//            std::cout << i << " ";
-//        }
-//        std::cout << "\n";
-//        int i = 0;
-//        for (std::vector<int> row : ghostMap){
-//            std::cout << i << ": ";
-//            for(int road : row){
-//                std::cout << road << " ";
-//            }
-//            i++;
-//            std::cout << "\n";
-//        }
-//    }
+
+    void printMapInformation(){
+        LOG_INFO("");
+        LOG_INFO("This is map's information:");
+        std::ostringstream info;
+        info.str("");
+        info << "[    ]";
+        for(int i = 0; i < printMap[0].size(); i++){
+            info << "[                   " << std::setw(2) << i+1 << "                  ]";
+            if(i != printMap[0].size()-1){
+                info << " / ";
+            }
+        }
+        LOG_INFO("{}", info.str());
+        int i = 1;
+        for(const std::vector<std::shared_ptr<Block>>& printRow : printMap){
+            info.str("");
+            info << "[ " << std::setw(2) << i << " ]";
+            for(std::shared_ptr<Block> block : printRow){
+                info << "{";
+                info << "Code number: " << std::setw(2) << block->GetCodeNumber() << ", ";
+                info << "Position: [" ;
+                info << std::setw(4) << block->GetPosition().x;
+                info << ", ";
+                info << std::setw(4) << block->GetPosition().y;
+                info << "]";
+                info << "}";
+
+                if(block != printRow.back()){
+                    info << " / ";
+                }
+            }
+            info.clear();
+            LOG_INFO("{}", info.str());
+            i++;
+        }
+        LOG_INFO("");
+    }
+
+    void printMapInformation(int i, int j) {
+        i--;
+        j--;
+        if (i < 0 || i > printMap[j].size() || j < 0 || j > printMap.size()) {
+            LOG_ERROR("Invalid indexes: ({}, {}).", i, j);
+            return;
+        }
+
+        LOG_INFO("");
+        LOG_INFO("Information at indexes ({}, {}):", i, j);
+        std::shared_ptr<Block> block = printMap[j][i];
+
+        std::ostringstream info;
+        info << "{";
+        info << "Code number: " << std::setw(2) << block->GetCodeNumber() << ", ";
+        info << "Position: [" ;
+        info << std::setw(4) << block->GetPosition().x;
+        info << ", ";
+        info << std::setw(4) << block->GetPosition().y;
+        info << "]";
+        info << "}";
+
+        LOG_INFO("{}", info.str());
+        LOG_INFO("");
+    }
 
     bool IsPacmanRoad(const glm::vec2 &Position) {
         auto it = find_if(pacmanRoads.begin(), pacmanRoads.end(),
@@ -135,6 +189,7 @@ private:
     std::vector<std::shared_ptr<Block>> largeBeans;
 
     std::vector<std::vector<int>> ghostMap;
+    std::vector<std::vector<std::shared_ptr<Block>>> printMap;
 
     std::map<int, std::string> Mapper{
         {0,  "small_ball"},
