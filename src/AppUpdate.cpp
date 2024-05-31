@@ -245,27 +245,76 @@ void App::Update() {
         }
     };
 
-    }
+    auto isBetween = [&](glm::vec2 maxPosition, glm::vec2 minPosition, glm::vec2 position) {
+        return minPosition.x <= position.x &&
+               position.x <= maxPosition.x &&
+               minPosition.y <= position.y &&
+               position.y <= maxPosition.y;
+    };
 
-    if (ghosts.at("inky")->IsArrivePosition()) {
-        if (ghosts.at("inky")->GetState() == "Dead")ghosts.at("inky")->ReStart();
-        ghosts.at("inky")->SetTargetPosition(map->changeToPositionInVector(
-            map->GetLargeBeans()[gen() % map->GetLargeBeans().size()]->GetPosition()
-        ));
-        ghosts.at("inky")->shortestPath(
-            map->changeToPositionInVector(ghosts.at("inky")->GetPosition())
-        );
-    }
+    std::function<void()> blinkyVulnerableMove = [&]() {
+        std::random_device rd;
+        std::mt19937 gen(rd());
 
-    if (ghosts.at("clyde")->IsArrivePosition()) {
-        if (ghosts.at("clyde")->GetState() == "Dead")ghosts.at("clyde")->ReStart();
-        ghosts.at("clyde")->SetTargetPosition(map->changeToPositionInVector(
-            map->GetGhostRoad()[gen() % map->GetGhostRoad().size()]->GetPosition()
-        ));
-        ghosts.at("clyde")->shortestPath(
-            map->changeToPositionInVector(ghosts.at("clyde")->GetPosition())
-        );
-    }
+        unsigned num = gen() % map->GetGhostRoad().size();
+        while (!isBetween(levelBuilder.getBlinkyVulnerableMax(), levelBuilder.getBlinkyVulnerableMin(),
+                          map->GetGhostRoad()[num]->GetPosition())) {
+            num = gen() % map->GetGhostRoad().size();
+        }
+
+        if (ghosts.at("blinky")->IsArrivePosition()) {
+            ghosts.at("blinky")->setRoad(
+                map->shortestPath(ghosts.at("blinky")->GetPosition(), map->GetGhostRoad()[num]->GetPosition()));
+        }
+    };
+
+    std::function<void()> pinkyVulnerableMove = [&]() {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        unsigned num = gen() % map->GetGhostRoad().size();
+        while (!isBetween(levelBuilder.getPinkyVulnerableMax(), levelBuilder.getPinkyVulnerableMin(),
+                          map->GetGhostRoad()[num]->GetPosition())) {
+            num = gen() % map->GetGhostRoad().size();
+        }
+
+        if (ghosts.at("pinky")->IsArrivePosition()) {
+            ghosts.at("pinky")->setRoad(
+                map->shortestPath(ghosts.at("pinky")->GetPosition(), map->GetGhostRoad()[num]->GetPosition()));
+        }
+    };
+
+    std::function<void()> inkyVulnerableMove = [&]() {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        unsigned num = gen() % map->GetGhostRoad().size();
+        while (!isBetween(levelBuilder.getInkyVulnerableMax(), levelBuilder.getInkyVulnerableMin(),
+                          map->GetGhostRoad()[num]->GetPosition())) {
+            num = gen() % map->GetGhostRoad().size();
+        }
+
+        if (ghosts.at("inky")->IsArrivePosition()) {
+            ghosts.at("inky")->setRoad(
+                map->shortestPath(ghosts.at("inky")->GetPosition(), map->GetGhostRoad()[num]->GetPosition()));
+        }
+    };
+
+    std::function<void()> clydeVulnerableMove = [&]() {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+
+        unsigned num = gen() % map->GetGhostRoad().size();
+        while (!isBetween(levelBuilder.getClydeVulnerableMax(), levelBuilder.getClydeVulnerableMin(),
+                          map->GetGhostRoad()[num]->GetPosition())) {
+            num = gen() % map->GetGhostRoad().size();
+        }
+
+        if (ghosts.at("clyde")->IsArrivePosition()) {
+            ghosts.at("clyde")->setRoad(
+                map->shortestPath(ghosts.at("clyde")->GetPosition(), map->GetGhostRoad()[num]->GetPosition()));
+        }
+    };
 
     for (auto &ghost: ghosts) {
         if (ghost.second->GetState() == "Dead") {
