@@ -1,71 +1,69 @@
-#include <iostream>
 #include<chrono>
 #include <random>
+#include <iostream>
 
 #include "App.hpp"
 #include "Util/Input.hpp"
 
 void App::Update() {
-    if (Util::Input::IsKeyDown(Util::Keycode::UP)) {
-        pacman->setNextDirection(Pacman::Direction::up);
-    } else if (Util::Input::IsKeyDown(Util::Keycode::DOWN)) {
-        pacman->setNextDirection(Pacman::Direction::down);
-    } else if (Util::Input::IsKeyDown(Util::Keycode::RIGHT)) {
-        pacman->setNextDirection(Pacman::Direction::right);
-    } else if (Util::Input::IsKeyDown(Util::Keycode::LEFT)) {
-        pacman->setNextDirection(Pacman::Direction::left);
-    }
+    std::function<void()> pacmanMove = [&]() {
+        if (Util::Input::IsKeyDown(Util::Keycode::UP)) {
+            pacman->setNextDirection(Pacman::Direction::up);
+        } else if (Util::Input::IsKeyDown(Util::Keycode::DOWN)) {
+            pacman->setNextDirection(Pacman::Direction::down);
+        } else if (Util::Input::IsKeyDown(Util::Keycode::RIGHT)) {
+            pacman->setNextDirection(Pacman::Direction::right);
+        } else if (Util::Input::IsKeyDown(Util::Keycode::LEFT)) {
+            pacman->setNextDirection(Pacman::Direction::left);
+        }
 
-    glm::vec2 oldPosition = pacman->GetPosition();
-    switch (pacman->getNextDirection()) {
-        case Pacman::Direction::up:
-            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y + 16.0f})) {
-                pacman->setCurrentDirection(pacman->getNextDirection());
-            }
-            break;
-        case Pacman::Direction::down:
-            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y - 16.0f})) {
-                pacman->setCurrentDirection(pacman->getNextDirection());
-            }
-            break;
-        case Pacman::Direction::right:
-            if (map->IsPacmanRoad({oldPosition.x + 16.0f, oldPosition.y})) {
-                pacman->setCurrentDirection(pacman->getNextDirection());
-            }
-            break;
-        case Pacman::Direction::left:
-            if (map->IsPacmanRoad({oldPosition.x - 16.0f, oldPosition.y})) {
-                pacman->setCurrentDirection(pacman->getNextDirection());
-            }
-            break;
-        case Pacman::Direction::none:
-            break;
-    }
+        glm::vec2 oldPosition = pacman->GetPosition();
+        switch (pacman->getNextDirection()) {
+            case Pacman::Direction::up:
+                if (map->IsPacmanRoad({oldPosition.x, oldPosition.y + 16.0f})) {
+                    pacman->setCurrentDirection(pacman->getNextDirection());
+                }
+                break;
+            case Pacman::Direction::down:
+                if (map->IsPacmanRoad({oldPosition.x, oldPosition.y - 16.0f})) {
+                    pacman->setCurrentDirection(pacman->getNextDirection());
+                }
+                break;
+            case Pacman::Direction::right:
+                if (map->IsPacmanRoad({oldPosition.x + 16.0f, oldPosition.y})) {
+                    pacman->setCurrentDirection(pacman->getNextDirection());
+                }
+                break;
+            case Pacman::Direction::left:
+                if (map->IsPacmanRoad({oldPosition.x - 16.0f, oldPosition.y})) {
+                    pacman->setCurrentDirection(pacman->getNextDirection());
+                }
+        }
 
-    switch (pacman->getCurrentDirection()) {
-        case Pacman::Direction::up:
-            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y + 16.0f})) {
-                pacman->MoveUp();
-            }
-            break;
-        case Pacman::Direction::down:
-            if (map->IsPacmanRoad({oldPosition.x, oldPosition.y - 16.0f})) {
-                pacman->MoveDown();
-            }
-            break;
-        case Pacman::Direction::right:
-            if (map->IsPacmanRoad({oldPosition.x + 16.0f, oldPosition.y})) {
-                pacman->MoveRight();
-            }
-            break;
-        case Pacman::Direction::left:
-            if (map->IsPacmanRoad({oldPosition.x - 16.0f, oldPosition.y})) {
-                pacman->MoveLeft();
-            }
-            break;
-        case Pacman::Direction::none:
-            break;
-    }
+        switch (pacman->getCurrentDirection()) {
+            case Pacman::Direction::up:
+                if (map->IsPacmanRoad({oldPosition.x, oldPosition.y + 16.0f})) {
+                    pacman->MoveUp();
+                }
+                break;
+            case Pacman::Direction::down:
+                if (map->IsPacmanRoad({oldPosition.x, oldPosition.y - 16.0f})) {
+                    pacman->MoveDown();
+                }
+                break;
+            case Pacman::Direction::right:
+                if (map->IsPacmanRoad({oldPosition.x + 16.0f, oldPosition.y})) {
+                    pacman->MoveRight();
+                }
+                break;
+            case Pacman::Direction::left:
+                if (map->IsPacmanRoad({oldPosition.x - 16.0f, oldPosition.y})) {
+                    pacman->MoveLeft();
+                }
+                break;
+        }
+    };
+    pacmanMove();
 
     for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
         if (pacman->eatBean(bean) && bean->GetVisibility()) {
