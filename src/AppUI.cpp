@@ -10,6 +10,7 @@ void App::UIUpdate() {
 
     if(IsBackFromGame){
         NowUI = std::make_shared<UISystem>();
+        NowUI -> Initialize();
         root.AddChild(NowUI);
         IsBackFromGame = false;
     }
@@ -18,11 +19,13 @@ void App::UIUpdate() {
 //    if((Util::Input::IsKeyUp(Util::Keycode::ESCAPE)){
 //
 //    }
-    LOG_DEBUG("({})", nowCursor);
+    //LOG_DEBUG("({})", nowCursor);
 
 
     if(Util::Input::IsKeyUp(Util::Keycode::MOUSE_LB)){//進入關卡(加條件)按下GameStart後
         if(NowUI -> CheckOnButton(nowCursor) == 1){
+            NowUI -> DeleteButton();
+            //LOG_DEBUG("Delete");
             m_CurrentState = State::START;
         }
         if(NowUI -> CheckOnButton(nowCursor) == 2){

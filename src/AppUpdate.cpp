@@ -248,7 +248,10 @@ void App::Update() {
         }
     }
 
-    if(lifeSystem->IsDone()) m_CurrentState = State::END;
+    if(lifeSystem->IsDone()){
+        IsBackFromGame = true;
+        m_CurrentState = State::END;
+    }
 
     /*
      * Do not touch the code below as they serve the purpose for
@@ -256,7 +259,8 @@ void App::Update() {
      */
     if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
         Util::Input::IfExit()) {
-        m_CurrentState = State::END;
+        IsBackFromGame = true;
+        m_CurrentState = State::UI;
     }//改到在UI按ESC才有到END，在這按ESC是回UI
 
     root.Update();

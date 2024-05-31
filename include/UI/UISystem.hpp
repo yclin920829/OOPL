@@ -12,7 +12,7 @@ public:
     explicit UISystem() {
         //SetImage(ImagePath);
         //ResetPosition();
-        Initialize();
+        //Initialize();
     };
 
     //[[nodiscard]] const std::string& GetImagePath() const { return m_ImagePath; }
@@ -25,15 +25,30 @@ public:
         this -> GameOverButton = std::make_shared<GameOver>();
         GameOverButton->SetPosition({0, -150});
         this->AddChild(GameOverButton);
+        Buttons.push_back(GameOverButton);
 
         this -> StartGameButton = std::make_shared<StartButton>();
         StartGameButton->SetPosition({0, 0});
         this->AddChild(StartGameButton);
+        Buttons.push_back(StartGameButton);
 
         this -> PacmanButton = std::make_shared<PacmanSign>();
         PacmanButton->SetPosition({0, 100});
         this->AddChild(PacmanButton);
+        Buttons.push_back(PacmanButton);
+
     };
+
+    void DeleteButton(){
+        this->RemoveChild(this->GetChildren().back());
+        Buttons.pop_back();
+        this->RemoveChild(this->GetChildren().back());
+        Buttons.pop_back();
+        this->RemoveChild(this->GetChildren().back());
+        Buttons.pop_back();
+        //Buttons.clear();
+        //LOG_DEBUG(Buttons.size());
+    }
 
     int CheckOnButton(glm::vec2 nowCursorPosition){
         if(StartGameButton -> IsOnMe(nowCursorPosition))
@@ -59,6 +74,9 @@ private:
     std::shared_ptr<GameOver> GameOverButton;
     std::shared_ptr<StartButton> StartGameButton;
     std::shared_ptr<PacmanSign> PacmanButton;
+
+    std::vector<std::shared_ptr<Util::GameObject>> Buttons;
+
     //std::string m_ImagePath;
 };
 

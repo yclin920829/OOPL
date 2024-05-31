@@ -1,11 +1,12 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "Level/Pacman.hpp"
+#include "Level/Character/Pacman.hpp"
 #include "Level/ghost/Ghost.hpp"
 #include "Level/life/LifeSystem.hpp"
 #include "Level/fruit/FruitSystem.hpp"
 #include "Level/score/ScoreSystem.hpp"
+#include "Level/LevelManager.hpp"
 #include "UI/UISystem.hpp"
 
 #include "Util/Renderer.hpp"
@@ -45,10 +46,12 @@ private:
     std::shared_ptr<ScoreSystem> scoreSystem;
     std::shared_ptr<FruitSystem> fruitSystem;
     EventManager * eventManager = new EventManager();
-
+//
     std::shared_ptr<UISystem> NowUI;
     bool IsBackFromGame = true;
-
+    int nowLevel = 1;
+    std::shared_ptr<LevelManager> levelManager;
+//
     std::shared_ptr<Ghost> blinky;
     std::shared_ptr<Ghost> pinky;
     std::shared_ptr<Ghost> inky;

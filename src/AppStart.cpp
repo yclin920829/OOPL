@@ -5,6 +5,8 @@
 
 void App::Start() {
     //LOG_TRACE("Start");
+    
+    //levelManager ->ConstructLevel(nowLevel);
 
     int x_block_num = 28;
     int y_block_num = 31;
