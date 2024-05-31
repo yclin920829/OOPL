@@ -113,13 +113,19 @@ void App::Update() {
     };
     pacmanDead();
 
-    for (auto &ghost: ghosts) {
-        if (!pacman->IsDead() && pacman->IsCollides(ghost.second)) {
-            if (ghost.second->GetState() == "Normal") {
-                pacman->Dead();
-            } else if (ghost.second->GetState() == "Vulnerable") {
-                ghost.second->Dead();
+    std::function<void()> pacmanCollidesGhosts = [&]() {
+        for (auto &ghost: ghosts) {
+            if (!pacman->IsDead() && pacman->IsCollides(ghost.second)) {
+                if (ghost.second->GetState() == "Normal") {
+                    pacman->Dead();
+                } else if (ghost.second->GetState() == "Vulnerable") {
+                    ghost.second->Dead();
+                    ghost.second->setRoad(map->shortestPath(ghost.second->GetPosition(), glm::vec2{-16, 56}));
+                }
             }
+        }
+    };
+    pacmanCollidesGhosts();
         }
     }
 
