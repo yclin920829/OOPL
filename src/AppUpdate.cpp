@@ -318,13 +318,42 @@ void App::Update() {
 
     for (auto &ghost: ghosts) {
         if (ghost.second->GetState() == "Dead") {
-            ghost.second->SetTargetPosition(map->changeToPositionInVector(
-                {-16, 56}
-            ));
-            ghost.second->shortestPath(
-                map->changeToPositionInVector(ghost.second->GetPosition())
-            );
+            if (ghost.second->IsArrivePosition()) {
+                ghost.second->Normal();
+            }
         }
+    }
+
+    if (ghosts.at("blinky")->GetState() == "Vulnerable" && ghosts.at("blinky")->IsArrivePosition()) {
+        blinkyVulnerableMove();
+    }
+
+    if (ghosts.at("pinky")->GetState() == "Vulnerable" && ghosts.at("pinky")->IsArrivePosition()) {
+        pinkyVulnerableMove();
+    }
+
+    if (ghosts.at("inky")->GetState() == "Vulnerable" && ghosts.at("inky")->IsArrivePosition()) {
+        inkyVulnerableMove();
+    }
+
+    if (ghosts.at("clyde")->GetState() == "Vulnerable" && ghosts.at("clyde")->IsArrivePosition()) {
+        clydeVulnerableMove();
+    }
+
+    if (ghosts.at("blinky")->GetState() == "Normal") {
+        blinkyNormalMove();
+    }
+
+    if (ghosts.at("pinky")->GetState() == "Normal") {
+        pinkyNormalMove();
+    }
+
+    if (ghosts.at("inky")->GetState() == "Normal") {
+        inkyNormalMove();
+    }
+
+    if (ghosts.at("clyde")->GetState() == "Normal") {
+        clydeNormalMove();
     }
 
     for (auto &ghost: ghosts) {
@@ -338,7 +367,7 @@ void App::Update() {
     for (auto &ghost: ghosts) {
         if (time % (15 * 10) == 0) {
             if (ghost.second->GetState() == "Vulnerable") {
-                ghost.second->ReStart();
+                ghost.second->Normal();
             }
         }
     }
@@ -350,13 +379,9 @@ void App::Update() {
      * Do not touch the code below as they serve the purpose for
      * closing the window.
      */
-    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) ||
-        Util::Input::IfExit()) {
+    if (Util::Input::IsKeyUp(Util::Keycode::ESCAPE) || Util::Input::IfExit()) {
         m_CurrentState = State::END;
     }
 
     root.Update();
 }
-
-// load file
-
