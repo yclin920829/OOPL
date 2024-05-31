@@ -84,21 +84,24 @@ void App::Update() {
     };
     eatBeans();
 
-    int counter = 0;
-    for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
-        if (!bean->GetVisibility()) {
-            counter++;
+    std::function<void()> fruitEvent = [&]() {
+        int counter = 0;
+        for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
+            if (!bean->GetVisibility()) {
+                counter++;
+            }
         }
-    }
 
-    if ((counter % (map->GetSmallBeans().size() / 3)) == 0 && counter) {
-        fruitSystem->getCherry()->SetVisible(true);
-    }
+        if ((counter % (map->GetSmallBeans().size() / 3)) == 0 && counter) {
+            fruitSystem->getCherry()->SetVisible(true);
+        }
 
-    if (pacman->IsCollides(fruitSystem->getCherry()) && fruitSystem->getCherry()->GetVisibility()) {
-        fruitSystem->getCherry()->SetVisible(false);
-        pacman->HandleScoreUpCollision(100);
-    }
+        if (pacman->IsCollides(fruitSystem->getCherry()) && fruitSystem->getCherry()->GetVisibility()) {
+            fruitSystem->getCherry()->SetVisible(false);
+            pacman->HandleScoreUpCollision(100);
+        }
+    };
+    fruitEvent();
 
     if (pacman->IsDead() && pacman->IfAnimationEnds()) {
         pacman->ReStart();
