@@ -65,34 +65,34 @@ public:
     }
 
 
-    void printMapInformation(){
+    void printMapInformation() {
         LOG_INFO("");
         LOG_INFO("This is map's information:");
         std::ostringstream info;
         info.str("");
         info << "[    ]";
-        for(int i = 0; i < printMap[0].size(); i++){
-            info << "[                   " << std::setw(2) << i+1 << "                  ]";
-            if(i != printMap[0].size()-1){
+        for (int i = 0; i < printMap[0].size(); i++) {
+            info << "[                   " << std::setw(2) << i + 1 << "                  ]";
+            if (i != printMap[0].size() - 1) {
                 info << " / ";
             }
         }
         LOG_INFO("{}", info.str());
         int i = 1;
-        for(const std::vector<std::shared_ptr<Block>>& printRow : printMap){
+        for (const std::vector<std::shared_ptr<Block>> &printRow: printMap) {
             info.str("");
             info << "[ " << std::setw(2) << i << " ]";
-            for(std::shared_ptr<Block> block : printRow){
+            for (std::shared_ptr<Block> block: printRow) {
                 info << "{";
                 info << "Code number: " << std::setw(2) << block->GetCodeNumber() << ", ";
-                info << "Position: [" ;
+                info << "Position: [";
                 info << std::setw(4) << block->GetPosition().x;
                 info << ", ";
                 info << std::setw(4) << block->GetPosition().y;
                 info << "]";
                 info << "}";
 
-                if(block != printRow.back()){
+                if (block != printRow.back()) {
                     info << " / ";
                 }
             }
@@ -118,7 +118,7 @@ public:
         std::ostringstream info;
         info << "{";
         info << "Code number: " << std::setw(2) << block->GetCodeNumber() << ", ";
-        info << "Position: [" ;
+        info << "Position: [";
         info << std::setw(4) << block->GetPosition().x;
         info << ", ";
         info << std::setw(4) << block->GetPosition().y;
@@ -149,19 +149,55 @@ public:
         return false;
     }
 
-    glm::vec2 changeToPositionInVector(const glm::vec2 &Position) {
-        std::shared_ptr<Block> block;
-        auto it = find_if(ghostRoads.begin(), ghostRoads.end(),
-                          [&Position, &block](const std::shared_ptr<Block> &obj) {
-                                block = obj;
-                              return (obj->GetPosition() == Position);
-                          });
+    std::vector<glm::vec2> shortestPath(glm::vec2 start, glm::vec2 targetPosition) {
 
-        if (it != ghostRoads.end()) {
-            return block->getPositionInVector();
-        }else{
-            LOG_DEBUG("not fund");
+        start = changeToPositionInVector(start);
+        targetPosition = changeToPositionInVector(targetPosition);
+
+        static const int dx[4] = {-1, 1, 0, 0};
+        static const int dy[4] = {0, 0, -1, 1};
+
+        int n = ghostMap.size();
+        int m = ghostMap[0].size();
+
+        std::vector<std::vector<bool>> visited(n, std::vector<bool>(m, false));
+        std::vector<std::vector<glm::vec2>> parent(n, std::vector<glm::vec2>(m, glm::vec2(-1, -1)));
+
+        std::queue<glm::vec2> q;
+        q.push(start);
+        visited[start.x][start.y] = true;
+
+        while (!q.empty()) {
+            glm::vec2 curr = q.front();
+            q.pop();
+
+            if (curr.x == targetPosition.x && curr.y == targetPosition.y) {
+                break; // 找到了目标点，停止搜索
+            }
+
+            for (int i = 0; i < 4; i++) {
+                int nx = curr.x + dx[i];
+                int ny = curr.y + dy[i];
+
+                if (nx >= 0 && nx < n && ny >= 0 && ny < m && ghostMap[nx][ny] == 1 && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    parent[nx][ny] = curr;
+                    q.push(glm::vec2(nx, ny));
+                }
+            }
+
         }
+
+        std::vector<glm::vec2> path;
+        glm::vec2 curr = targetPosition;
+        while (!(curr.x == start.x && curr.y == start.y)) {
+            path.push_back(curr);
+            curr = parent[curr.x][curr.y];
+        }
+        path.push_back(start);
+
+        reverse(path.begin(), path.end());
+        return path;
     }
 
     [[nodiscard]] const std::vector<std::shared_ptr<Block>> &GetSmallBeans() const {
@@ -227,6 +263,21 @@ private:
         {42, "in_game_black"},
         {43, "large_ball"}
     };
+
+    glm::vec2 changeToPositionInVector(const glm::vec2 &Position) {
+        std::shared_ptr<Block> block;
+        auto it = find_if(ghostRoads.begin(), ghostRoads.end(),
+                          [&Position, &block](const std::shared_ptr<Block> &obj) {
+                              block = obj;
+                              return (obj->GetPosition() == Position);
+                          });
+
+        if (it != ghostRoads.end()) {
+            return block->getPositionInVector();
+        } else {
+            LOG_DEBUG("AAA not fund");
+        }
+    }
 };
 
 #endif //MAP_HPP
