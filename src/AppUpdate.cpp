@@ -126,8 +126,33 @@ void App::Update() {
         }
     };
     pacmanCollidesGhosts();
+
+    std::function<void()> blinkyNormalMove = [&]() {
+        ghosts.at("blinky")->setRoad(map->shortestPath(ghosts.at("blinky")->GetPosition(), pacman->GetPosition()));
+    };
+
+    std::function<void()> pinkyNormalMove = [&]() {
+
+        glm::vec2 position = pacman->GetPosition();
+
+        switch (pacman->getCurrentDirection()) {
+            case Pacman::Direction::up:
+                position.y += 64.0f;
+                break;
+            case Pacman::Direction::down:
+                position.y -= 64.0f;
+                break;
+            case Pacman::Direction::right:
+                position.x += 64.0f;
+                break;
+            case Pacman::Direction::left:
+                position.x -= 64.0f;
+        }
+        if (map->IsGhostRoad(position)) {
+            ghosts.at("pinky")->setRoad(map->shortestPath(ghosts.at("pinky")->GetPosition(), position));
         }
     }
+    };
 
     std::random_device rd;
     std::mt19937 gen(rd());
