@@ -65,23 +65,24 @@ void App::Update() {
     };
     pacmanMove();
 
-    for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
-        if (pacman->eatBean(bean) && bean->GetVisibility()) {
-            bean->SetVisible(false);
-            pacman->HandleScoreUpCollision();
-        }
-    }
+    std::function<void()> eatBeans = [&]() {
+        for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
+            if (pacman->eatBean(bean) && bean->GetVisibility()) {
+                bean->SetVisible(false);
+                if (bean->GetCodeNumber() == 0) {
+                    pacman->HandleScoreUpCollision();
+                } else if (bean->GetCodeNumber() == 43) {
+                    for (auto &ghost: ghosts) {
+                        ghost.second->Vulnerable();
+                    }
+                    pacman->HandleScoreUpCollision(75);
+                    time = 0;
+                }
 
-    for (const std::shared_ptr<Block> &bean: map->GetLargeBeans()) {
-        if (pacman->eatBean(bean) && bean->GetVisibility()) {
-            bean->SetVisible(false);
-            for (auto &ghost: ghosts) {
-                ghost.second->Vulnerable();
             }
-            pacman->HandleScoreUpCollision(75);
-            time = 0;
         }
-    }
+    };
+    eatBeans();
 
     int counter = 0;
     for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
