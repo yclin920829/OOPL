@@ -151,11 +151,39 @@ void App::Update() {
         if (map->IsGhostRoad(position)) {
             ghosts.at("pinky")->setRoad(map->shortestPath(ghosts.at("pinky")->GetPosition(), position));
         }
-    }
     };
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    std::function<void()> inkyNormalMove = [&]() {
+        glm::vec2 centerPosition = pacman->GetPosition();
+
+        switch (pacman->getCurrentDirection()) {
+            case Pacman::Direction::up:
+                centerPosition.y += 32.0f;
+                break;
+            case Pacman::Direction::down:
+                centerPosition.y -= 32.0f;
+                break;
+            case Pacman::Direction::right:
+                centerPosition.x += 32.0f;
+                break;
+            case Pacman::Direction::left:
+                centerPosition.x -= 32.0f;
+        }
+
+        centerPosition *= 2;
+        glm::vec2 ghostPosition = ghosts.at("blinky")->GetPosition();
+        glm::vec2 position = centerPosition - ghostPosition;
+
+        if (!map->IsGhostRoad(position)) {
+            position = ghostPosition - centerPosition;
+        }
+        if (map->IsGhostRoad(position)) {
+            ghosts.at("inky")->setRoad(map->shortestPath(ghosts.at("inky")->GetPosition(), position));
+        }
+
+        if (ghosts.at("inky")->IsArrivePosition()) {
+            std::random_device rd;
+            std::mt19937 gen(rd());
 
     if (ghosts.at("blinky")->IsArrivePosition()) {
         if (ghosts.at("blinky")->GetState() == "Dead") {
@@ -182,6 +210,65 @@ void App::Update() {
         ghosts.at("pinky")->shortestPath(
             map->changeToPositionInVector(ghosts.at("pinky")->GetPosition())
         );
+            unsigned num = gen() % map->GetSmallBeans().size();
+            while (!map->GetSmallBeans()[num]->GetVisibility()) {
+                num = gen() % map->GetSmallBeans().size();
+            }
+            ghosts.at("inky")->setRoad(
+                map->shortestPath(ghosts.at("inky")->GetPosition(), map->GetSmallBeans()[num]->GetPosition()));
+        }
+
+    };
+
+    std::function<void()> clydeNormalMove = [&]() {
+        glm::vec2 pacmanPosition = pacman->GetPosition();
+        glm::vec2 ghostPosition = ghosts.at("clyde")->GetPosition();
+
+        if (ghosts.at("clyde")->IsArrivePosition()) {
+
+            auto IsIntersection = [&](unsigned num) {
+                LOG_DEBUG("123456");
+                int counter = 0;
+                glm::vec2 positionA = map->GetGhostRoad()[num]->GetPosition();
+                if (map->IsGhostRoad({positionA.x, positionA.y + 16}) ||
+                    map->IsGhostRoad({positionA.x, positionA.y - 16}))
+                    counter += 1;
+                if (map->IsGhostRoad({positionA.x + 16, positionA.y}) ||
+                    map->IsGhostRoad({positionA.x - 16, positionA.y}))
+                    counter += 1;
+                return counter;
+            };
+
+            auto IsDistanceBiggerThanEight = [&]() {
+                if ((abs(pacmanPosition.x - ghostPosition.x) > 128) ||
+                    (abs(pacmanPosition.y - ghostPosition.y) > 128)) {
+                    return true;
+                }
+                if ((abs(pacmanPosition.x - ghostPosition.x) < 128) ||
+                    (abs(pacmanPosition.y - ghostPosition.y) < 128)) {
+                    return false;
+                }
+                return false;
+            };
+
+            if (IsDistanceBiggerThanEight()) {
+                ghosts.at("clyde")->setRoad(map->shortestPath(ghostPosition, pacman->GetPosition()));
+            } else {
+                std::random_device rd;
+                std::mt19937 gen(rd());
+
+                unsigned num = gen() % map->GetGhostRoad().size();
+
+                while (!IsIntersection(num) && IsDistanceBiggerThanEight()) {
+                    num = gen() % map->GetGhostRoad().size();
+
+                }
+                ghosts.at("clyde")->setRoad(
+                    map->shortestPath(ghosts.at("clyde")->GetPosition(), map->GetGhostRoad()[num]->GetPosition()));
+
+            }
+        }
+    };
 
     }
 
