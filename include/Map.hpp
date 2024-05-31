@@ -42,21 +42,16 @@ public:
                 block->SetPosition({positionX, positionY});
                 this->AddChild(block);
 
-                if (0 == map_by_number[i][j]) {
-                    smallBeans.push_back(block);
+                if (0 == map_by_number[i][j] || 43 == map_by_number[i][j]) { // beans
+                    beans.push_back(block);
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
                     row.push_back(1);
-                } else if (43 == map_by_number[i][j]) {
-                    largeBeans.push_back(block);
+                } else if (42 == map_by_number[i][j]) { // in_game_black
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
                     row.push_back(1);
-                } else if (42 == map_by_number[i][j]) {
-                    pacmanRoads.push_back(block);
-                    ghostRoads.push_back(block);
-                    row.push_back(1);
-                }else if (19 == map_by_number[i][j] || 41 == map_by_number[i][j]){
+                } else if (19 == map_by_number[i][j] || 41 == map_by_number[i][j]) { // respawn
                     ghostRoads.push_back(block);
                     row.push_back(1);
                 } else {
@@ -170,11 +165,7 @@ public:
     }
 
     [[nodiscard]] const std::vector<std::shared_ptr<Block>> &GetSmallBeans() const {
-        return smallBeans;
-    }
-
-    [[nodiscard]] const std::vector<std::shared_ptr<Block>> &GetLargeBeans() const {
-        return largeBeans;
+        return beans;
     }
 
     [[nodiscard]] const std::vector<std::shared_ptr<Block>> &GetGhostRoad() const {
@@ -185,8 +176,7 @@ private:
     double pixel = 16;
     std::vector<std::shared_ptr<Block>> ghostRoads;
     std::vector<std::shared_ptr<Block>> pacmanRoads;
-    std::vector<std::shared_ptr<Block>> smallBeans;
-    std::vector<std::shared_ptr<Block>> largeBeans;
+    std::vector<std::shared_ptr<Block>> beans;
 
     std::vector<std::vector<int>> ghostMap;
     std::vector<std::vector<std::shared_ptr<Block>>> printMap;
