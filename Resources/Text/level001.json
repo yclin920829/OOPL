@@ -114,7 +114,25 @@
     "pacmanRightImages":["/Image/Character/pacman/pacman_R_01.png", "/Image/Character/pacman/pacman_R_02.png"],
     "pacmanLeftImages":["/Image/Character/pacman/pacman_L_01.png", "/Image/Character/pacman/pacman_L_02.png"],
     "pacmanPosition":{
-        "X": 0.0,
+        "X": -0.0,
         "Y": -88.0
+    },
+    "Vulnerable":{
+        "blinky":{
+            "max":[-16,  264],
+            "min":[-224,  120]
+        },
+        "pinky": {
+            "max":[208,  264],
+            "min":[0,  120]
+        },
+        "inky": {
+            "max":[ -16,  -56],
+            "min":[-224, -216]
+        },
+        "clyde": {
+            "max":[ 208,  -56],
+            "min":[ 0, -216]
+        }
     }
 }

@@ -56,14 +56,14 @@ public:
         return glm::vec2{json["hightScorePosition"]["X"].get<float>(), json["hightScorePosition"]["Y"].get<float>()};
     }
 
-    std::vector<std::string> getGhostNames(){
+    std::vector<std::string> getGhostNames() {
         return json["ghostName"].get<std::vector<std::string>>();
     }
 
-    std::vector<glm::vec2> getGhostInitialPosition(){
+    std::vector<glm::vec2> getGhostInitialPosition() {
         std::vector<glm::vec2> positions;
-        for(std::vector<float> position : json["ghostInitialPosition"].get<std::vector<std::vector<float>>>()){
-            positions.push_back(glm::vec2{position.at(0), position.at(1)});
+        for (std::vector<float> position: json["ghostInitialPosition"].get<std::vector<std::vector<float>>>()) {
+            positions.emplace_back(position.at(0), position.at(1));
         }
         return positions;
     }
@@ -80,7 +80,7 @@ public:
         return paths;
     }
 
-    std::vector<std::string> getPacmanUpImages(){
+    std::vector<std::string> getPacmanUpImages() {
         std::vector<std::string> paths;
         for (std::string path: json["pacmanUpImages"].get<std::vector<std::string>>()) {
             paths.push_back(RESOURCE_DIR + path);
@@ -88,7 +88,7 @@ public:
         return paths;
     }
 
-    std::vector<std::string> getPacmanDownImages(){
+    std::vector<std::string> getPacmanDownImages() {
         std::vector<std::string> paths;
         for (std::string path: json["pacmanDownImages"].get<std::vector<std::string>>()) {
             paths.push_back(RESOURCE_DIR + path);
@@ -96,7 +96,7 @@ public:
         return paths;
     }
 
-    std::vector<std::string> getPacmanRightImages(){
+    std::vector<std::string> getPacmanRightImages() {
         std::vector<std::string> paths;
         for (std::string path: json["pacmanRightImages"].get<std::vector<std::string>>()) {
             paths.push_back(RESOURCE_DIR + path);
@@ -104,7 +104,7 @@ public:
         return paths;
     }
 
-    std::vector<std::string> getPacmanLeftImages(){
+    std::vector<std::string> getPacmanLeftImages() {
         std::vector<std::string> paths;
         for (std::string path: json["pacmanLeftImages"].get<std::vector<std::string>>()) {
             paths.push_back(RESOURCE_DIR + path);
@@ -112,8 +112,48 @@ public:
         return paths;
     }
 
-    glm::vec2 getPacmanPosition(){
+    glm::vec2 getPacmanPosition() {
         return glm::vec2{json["pacmanPosition"]["X"].get<float>(), json["pacmanPosition"]["Y"].get<float>()};
+    }
+
+    glm::vec2 getBlinkyVulnerableMax() {
+        return glm::vec2{json["Vulnerable"]["blinky"]["max"][0].get<float>(),
+                         json["Vulnerable"]["blinky"]["max"][1].get<float>()};
+    }
+
+    glm::vec2 getBlinkyVulnerableMin() {
+        return glm::vec2{json["Vulnerable"]["blinky"]["min"][0].get<float>(),
+                         json["Vulnerable"]["blinky"]["min"][1].get<float>()};
+    }
+
+    glm::vec2 getPinkyVulnerableMax() {
+        return glm::vec2{json["Vulnerable"]["pinky"]["max"][0].get<float>(),
+                         json["Vulnerable"]["pinky"]["max"][1].get<float>()};
+    }
+
+    glm::vec2 getPinkyVulnerableMin() {
+        return glm::vec2{json["Vulnerable"]["pinky"]["min"][0].get<float>(),
+                         json["Vulnerable"]["pinky"]["min"][1].get<float>()};
+    }
+
+    glm::vec2 getInkyVulnerableMax() {
+        return glm::vec2{json["Vulnerable"]["inky"]["max"][0].get<float>(),
+                         json["Vulnerable"]["inky"]["max"][1].get<float>()};
+    }
+
+    glm::vec2 getInkyVulnerableMin() {
+        return glm::vec2{json["Vulnerable"]["inky"]["min"][0].get<float>(),
+                         json["Vulnerable"]["inky"]["min"][1].get<float>()};
+    }
+
+    glm::vec2 getClydeVulnerableMax() {
+        return glm::vec2{json["Vulnerable"]["clyde"]["max"][0].get<float>(),
+                         json["Vulnerable"]["clyde"]["max"][1].get<float>()};
+    }
+
+    glm::vec2 getClydeVulnerableMin() {
+        return glm::vec2{json["Vulnerable"]["clyde"]["min"][0].get<float>(),
+                         json["Vulnerable"]["clyde"]["min"][1].get<float>()};
     }
 
 private:
