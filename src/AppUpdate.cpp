@@ -103,17 +103,15 @@ void App::Update() {
     };
     fruitEvent();
 
-    if (pacman->IsDead() && pacman->IfAnimationEnds()) {
-        pacman->ReStart();
-        pacman->setNextDirection(Pacman::Direction::left);
-        for (const auto &ghost: ghosts) {
-            ghost.second->ReStart();
-            ghost.second->SetTargetPosition(map->changeToPositionInVector({-208, 248}));
-            ghost.second->shortestPath(
-                map->changeToPositionInVector(ghost.second->GetPosition())
-            );
+    std::function<void()> pacmanDead = [&]() {
+        if (pacman->IsDead() && pacman->IfAnimationEnds()) {
+            pacman->ReStart();
+            for (const auto &ghost: ghosts) {
+                ghost.second->ReStart();
+            }
         }
-    }
+    };
+    pacmanDead();
 
     for (auto &ghost: ghosts) {
         if (!pacman->IsDead() && pacman->IsCollides(ghost.second)) {
