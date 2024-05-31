@@ -13,22 +13,26 @@ public:
     explicit Pacman() {
         SetZIndex(20);
         SetVisible(true);
-        dead= false;
+        dead = false;
+        currentDirection = Direction::left;
+        nextDirection = Direction::left;
     };
 
-    void AddEventManager(EventManager *eventManager){
+    void AddEventManager(EventManager *eventManager) {
         this->eventManager = eventManager;
     }
 
-    enum Direction { up, down, right, left, none };
+    enum class Direction {
+        up, down, right, left
+    };
 
-    void HandleCollision(int damage = 1){
+    void HandleCollision(int damage = 1) {
         CollisionEventData eventData{};
         eventData.damage = damage;
         eventManager->notify(COLLISION_WITH_GHOST_EVENT_NOT_INVINCIBLE, eventData);
     }//處理扣血
 
-    void HandleScoreUpCollision(int score =  15){
+    void HandleScoreUpCollision(int score = 15) {
         CollisionToAddEventData eventData;
         eventData.quantity = score;
         eventManager->notify(COLLISION_TO_ADD_SCORE, eventData);
@@ -108,6 +112,8 @@ public:
         dead = false;
         SetPosition({-0.0f, -88.0f});
         SetDrawable(LEFT);
+        currentDirection = Direction::left;
+        nextDirection = Direction::left;
     }
 
     [[nodiscard]] const glm::vec2 &GetPosition() const { return m_Transform.translation; }
@@ -161,7 +167,7 @@ public:
     }
 
 private:
-    EventManager * eventManager{};
+    EventManager *eventManager{};
     std::shared_ptr<Core::Drawable> UP;
     std::shared_ptr<Core::Drawable> DOWN;
     std::shared_ptr<Core::Drawable> RIGHT;
@@ -169,8 +175,8 @@ private:
     std::shared_ptr<Core::Drawable> DEAD;
 
 
-    Direction currentDirection = left;
-    Direction nextDirection = none;
+    Direction currentDirection;
+    Direction nextDirection;
 
     bool dead;
 };
