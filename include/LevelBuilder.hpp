@@ -156,6 +156,18 @@ public:
                          json["Vulnerable"]["clyde"]["min"][1].get<float>()};
     }
 
+    std::vector<std::vector<glm::vec2>> getJumpPoints() {
+        if (json.contains("jumpPoint")) {
+            std::vector<std::vector<glm::vec2>> jumpPoints;
+            for (auto &jumpPoint: json["jumpPoint"]) {
+                jumpPoints.push_back({glm::vec2(jumpPoint[0][0].get<float>(), jumpPoint[0][1].get<float>()),
+                                      glm::vec2(jumpPoint[1][0].get<float>(), jumpPoint[1][1].get<float>())});
+            }
+            return jumpPoints;
+        }
+        return {};
+    }
+
 private:
     Json json;
 };

@@ -62,6 +62,8 @@ void App::Update() {
                 }
                 break;
         }
+
+        pacman->JumpPoint();
     };
     pacmanMove();
 
@@ -340,21 +342,21 @@ void App::Update() {
         clydeVulnerableMove();
     }
 
-    if (ghosts.at("blinky")->GetState() == "Normal") {
-        blinkyNormalMove();
-    }
-
-    if (ghosts.at("pinky")->GetState() == "Normal") {
-        pinkyNormalMove();
-    }
-
-    if (ghosts.at("inky")->GetState() == "Normal") {
-        inkyNormalMove();
-    }
-
-    if (ghosts.at("clyde")->GetState() == "Normal") {
-        clydeNormalMove();
-    }
+//    if (ghosts.at("blinky")->GetState() == "Normal") {
+//        blinkyNormalMove();
+//    }
+//
+//    if (ghosts.at("pinky")->GetState() == "Normal") {
+//        pinkyNormalMove();
+//    }
+//
+//    if (ghosts.at("inky")->GetState() == "Normal") {
+//        inkyNormalMove();
+//    }
+//
+//    if (ghosts.at("clyde")->GetState() == "Normal") {
+//        clydeNormalMove();
+//    }
 
     for (auto &ghost: ghosts) {
         if (!pacman->IsDead()) {

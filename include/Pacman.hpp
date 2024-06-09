@@ -91,10 +91,6 @@ public:
         SetPosition({position.x - 16.0f, position.y});
     }
 
-    void Move(glm::vec2 &position) {
-        SetPosition(position);
-    }
-
     void Dead() {
         SetDrawable(DEAD);
         auto animation = std::dynamic_pointer_cast<Util::Animation>(m_Drawable);
@@ -166,6 +162,19 @@ public:
         Pacman::nextDirection = nextDirection;
     }
 
+    void setJumpPoint(const std::vector<std::vector<glm::vec2>> &jumpPoint) {
+        this->jumpPoint = jumpPoint;
+    }
+
+    void JumpPoint(){
+        for(auto &jumpPoint : jumpPoint){
+            if(GetPosition() == jumpPoint[0]){
+                SetPosition(jumpPoint[1]);
+                return;
+            }
+        }
+    }
+
 private:
     EventManager *eventManager{};
     std::shared_ptr<Core::Drawable> UP;
@@ -174,6 +183,7 @@ private:
     std::shared_ptr<Core::Drawable> LEFT;
     std::shared_ptr<Core::Drawable> DEAD;
 
+    std::vector<std::vector<glm::vec2>> jumpPoint;
 
     Direction currentDirection;
     Direction nextDirection;

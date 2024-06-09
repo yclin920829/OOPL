@@ -6,7 +6,7 @@
 void App::Start() {
     LOG_TRACE("Start");
 
-    levelBuilder = LevelBuilder(RESOURCE_DIR"/Text/level001.json");
+    levelBuilder = LevelBuilder(RESOURCE_DIR"/Text/level002.json");
     levelBuilder.Print();
 
     map = std::make_shared<Map>(levelBuilder.getMapSize(), levelBuilder.getMap());
@@ -36,6 +36,7 @@ void App::Start() {
 
     pacman = std::make_shared<Pacman>();
     pacman->AddEventManager(eventManager);
+    pacman->setJumpPoint(levelBuilder.getJumpPoints());
     pacman->SetUpImages(levelBuilder.getPacmanUpImages());
     pacman->SetDownImages(levelBuilder.getPacmanDownImages());
     pacman->SetRightImages(levelBuilder.getPacmanRightImages());
