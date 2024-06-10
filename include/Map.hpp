@@ -284,7 +284,7 @@ private:
         if (it != ghostRoads.end()) {
             return block->getPositionInVector();
         } else {
-            LOG_DEBUG("AAA not fund");
+            LOG_DEBUG("block not fund");
         }
     }
 };

@@ -20,18 +20,23 @@ void App::Start() {
     fruitSystem = std::make_shared<FruitSystem>(levelBuilder.getFruitSystemPosition());
     root.AddChild(fruitSystem);
 
-    scoreSystem = std::make_shared<ScoreSystem>(levelBuilder.getGameScorePosition(), levelBuilder.getHightScorePosition());
+    scoreSystem = std::make_shared<ScoreSystem>(levelBuilder.getGameScorePosition(),
+                                                levelBuilder.getHightScorePosition());
     scoreSystem->AddEventManager(eventManager);
     root.AddChild(scoreSystem);
 
 
-    for(int i = 0; i < 4;i++){
+    for (int i = 0; i < 4; i++) {
         ghosts.at(levelBuilder.getGhostNames().at(i)) = std::make_shared<Ghost>(
             levelBuilder.getGhostNames().at(i),
             levelBuilder.getGhostBFSMap(),
             levelBuilder.getGhostInitialPosition().at(i)
         );
         root.AddChild(ghosts.at(levelBuilder.getGhostNames().at(i)));
+    }
+
+    for (auto &ghost: ghosts) {
+        ghost.second->setJumpPoint(levelBuilder.getJumpPoints());
     }
 
     pacman = std::make_shared<Pacman>();

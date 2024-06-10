@@ -128,8 +128,26 @@ public:
         return road.empty();
     }
 
+    const glm::vec2 &getTargetPosition() const {
+        return targetPosition;
+    }
+
     void SetTargetPosition(glm::vec2 position) {
         targetPosition = position;
+    }
+
+    void setJumpPoint(const std::vector<std::vector<glm::vec2>> &jumpPoint) {
+        this->jumpPoint = jumpPoint;
+    }
+
+    void JumpPoint(){
+        for(auto &jumpPoint : jumpPoint){
+            if(GetPosition() == jumpPoint[0]){
+                SetPosition(jumpPoint[1]);
+                road.clear();
+                return;
+            }
+        }
     }
 
 
@@ -140,6 +158,8 @@ private:
 
     std::vector<glm::vec2> road;
     std::vector<std::vector<int>> map;
+
+    std::vector<std::vector<glm::vec2>> jumpPoint;
 
     GhostState *ghostState;
     GhostNormalState *normalGhost;

@@ -130,7 +130,27 @@ void App::Update() {
     pacmanCollidesGhosts();
 
     std::function<void()> blinkyNormalMove = [&]() {
-        ghosts.at("blinky")->setRoad(map->shortestPath(ghosts.at("blinky")->GetPosition(), pacman->GetPosition()));
+        glm::vec2 targetPosition = ghosts.at("blinky")->getTargetPosition();
+        std::vector<std::vector<glm::vec2>> jumpPoints = levelBuilder.getJumpPoints();
+
+        auto it = find_if(jumpPoints.begin(), jumpPoints.end(),
+                          [&targetPosition](std::vector<glm::vec2> &obj) {
+                              return (obj[0] == targetPosition);
+                          });
+
+        if (it != jumpPoints.end()) {
+            LOG_DEBUG("found");
+            if (ghosts.at("blinky")->IsArrivePosition()) {
+                ghosts.at("blinky")->setRoad(
+                    map->shortestPath(ghosts.at("blinky")->GetPosition(), pacman->GetPosition()));
+                ghosts.at("blinky")->SetTargetPosition(pacman->GetPosition());
+            }
+        } else {
+            LOG_DEBUG("not found");
+            glm::vec2 position = pacman->GetPosition();
+            ghosts.at("blinky")->setRoad(map->shortestPath(ghosts.at("blinky")->GetPosition(), position));
+            ghosts.at("blinky")->SetTargetPosition(position);
+        }
     };
 
     std::function<void()> pinkyNormalMove = [&]() {
@@ -151,7 +171,25 @@ void App::Update() {
                 position.x -= 64.0f;
         }
         if (map->IsGhostRoad(position)) {
-            ghosts.at("pinky")->setRoad(map->shortestPath(ghosts.at("pinky")->GetPosition(), position));
+            glm::vec2 targetPosition = ghosts.at("pinky")->getTargetPosition();
+            std::vector<std::vector<glm::vec2>> jumpPoints = levelBuilder.getJumpPoints();
+
+            auto it = find_if(jumpPoints.begin(), jumpPoints.end(),
+                              [&targetPosition](std::vector<glm::vec2> &obj) {
+                                  return (obj[0] == targetPosition);
+                              });
+
+            if (it != jumpPoints.end()) {
+                if (ghosts.at("pinky")->IsArrivePosition()) {
+                    ghosts.at("pinky")->setRoad(
+                        map->shortestPath(ghosts.at("pinky")->GetPosition(), pacman->GetPosition()));
+                    ghosts.at("pinky")->SetTargetPosition(pacman->GetPosition());
+                }
+            } else {
+                glm::vec2 position = pacman->GetPosition();
+                ghosts.at("pinky")->setRoad(map->shortestPath(ghosts.at("pinky")->GetPosition(), position));
+                ghosts.at("pinky")->SetTargetPosition(position);
+            }
         }
     };
 
@@ -204,7 +242,6 @@ void App::Update() {
         if (ghosts.at("clyde")->IsArrivePosition()) {
 
             auto IsIntersection = [&](unsigned num) {
-                LOG_DEBUG("123456");
                 int counter = 0;
                 glm::vec2 positionA = map->GetGhostRoad()[num]->GetPosition();
                 if (map->IsGhostRoad({positionA.x, positionA.y + 16}) ||
@@ -342,25 +379,26 @@ void App::Update() {
         clydeVulnerableMove();
     }
 
-//    if (ghosts.at("blinky")->GetState() == "Normal") {
-//        blinkyNormalMove();
-//    }
-//
-//    if (ghosts.at("pinky")->GetState() == "Normal") {
-//        pinkyNormalMove();
-//    }
-//
-//    if (ghosts.at("inky")->GetState() == "Normal") {
-//        inkyNormalMove();
-//    }
-//
-//    if (ghosts.at("clyde")->GetState() == "Normal") {
-//        clydeNormalMove();
-//    }
+    if (ghosts.at("blinky")->GetState() == "Normal") {
+        blinkyNormalMove();
+    }
+
+    if (ghosts.at("pinky")->GetState() == "Normal") {
+        pinkyNormalMove();
+    }
+
+    if (ghosts.at("inky")->GetState() == "Normal") {
+        inkyNormalMove();
+    }
+
+    if (ghosts.at("clyde")->GetState() == "Normal") {
+        clydeNormalMove();
+    }
 
     for (auto &ghost: ghosts) {
         if (!pacman->IsDead()) {
             ghost.second->move();
+            ghost.second->JumpPoint();
         }
     }
 
