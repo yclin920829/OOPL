@@ -61,6 +61,7 @@ public:
 
     void Start() {
         SetDrawable(LEFT);
+        SetPosition(initialPosition);
     }
 
     void MoveUp() {
@@ -106,7 +107,7 @@ public:
     void ReStart() {
         HandleCollision();
         dead = false;
-        SetPosition({-0.0f, -88.0f});
+        SetPosition(initialPosition);
         SetDrawable(LEFT);
         currentDirection = Direction::left;
         nextDirection = Direction::left;
@@ -175,6 +176,10 @@ public:
         }
     }
 
+    void setInitialPosition(const glm::vec2 &initialPosition) {
+        this->initialPosition = initialPosition;
+    }
+
 private:
     EventManager *eventManager{};
     std::shared_ptr<Core::Drawable> UP;
@@ -187,6 +192,9 @@ private:
 
     Direction currentDirection;
     Direction nextDirection;
+
+    glm::vec2 initialPosition;
+private:
 
     bool dead;
 };

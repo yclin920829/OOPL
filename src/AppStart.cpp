@@ -17,14 +17,14 @@ void App::Start() {
     lifeSystem->AddEventManager(eventManager);
     root.AddChild(lifeSystem);
 
-    fruitSystem = std::make_shared<FruitSystem>(levelBuilder.getFruitSystemPosition());
+    fruitSystem = std::make_shared<FruitSystem>(levelBuilder.getFruitSystemPosition(),
+                                                levelBuilder.getCherryPosition());
     root.AddChild(fruitSystem);
 
     scoreSystem = std::make_shared<ScoreSystem>(levelBuilder.getGameScorePosition(),
                                                 levelBuilder.getHightScorePosition());
     scoreSystem->AddEventManager(eventManager);
     root.AddChild(scoreSystem);
-
 
     for (int i = 0; i < 4; i++) {
         ghosts.at(levelBuilder.getGhostNames().at(i)) = std::make_shared<Ghost>(
@@ -42,13 +42,13 @@ void App::Start() {
     pacman = std::make_shared<Pacman>();
     pacman->AddEventManager(eventManager);
     pacman->setJumpPoint(levelBuilder.getJumpPoints());
+    pacman->setInitialPosition(levelBuilder.getPacmanPosition());
     pacman->SetUpImages(levelBuilder.getPacmanUpImages());
     pacman->SetDownImages(levelBuilder.getPacmanDownImages());
     pacman->SetRightImages(levelBuilder.getPacmanRightImages());
     pacman->SetLeftImages(levelBuilder.getPacmanLeftImages());
     pacman->SetDeadImages(levelBuilder.getPacmanDeadImages());
 
-    pacman->SetPosition(levelBuilder.getPacmanPosition());
     pacman->Start();
     root.AddChild(pacman);
 

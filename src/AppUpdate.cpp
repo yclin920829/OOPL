@@ -122,7 +122,7 @@ void App::Update() {
                     pacman->Dead();
                 } else if (ghost.second->GetState() == "Vulnerable") {
                     ghost.second->Dead();
-                    ghost.second->setRoad(map->shortestPath(ghost.second->GetPosition(), glm::vec2{-16, 56}));
+                    ghost.second->setRoad(map->shortestPath(ghost.second->GetPosition(), levelBuilder.getGhostRestartPosition()));
                 }
             }
         }
@@ -139,14 +139,12 @@ void App::Update() {
                           });
 
         if (it != jumpPoints.end()) {
-            LOG_DEBUG("found");
             if (ghosts.at("blinky")->IsArrivePosition()) {
                 ghosts.at("blinky")->setRoad(
                     map->shortestPath(ghosts.at("blinky")->GetPosition(), pacman->GetPosition()));
                 ghosts.at("blinky")->SetTargetPosition(pacman->GetPosition());
             }
         } else {
-            LOG_DEBUG("not found");
             glm::vec2 position = pacman->GetPosition();
             ghosts.at("blinky")->setRoad(map->shortestPath(ghosts.at("blinky")->GetPosition(), position));
             ghosts.at("blinky")->SetTargetPosition(position);

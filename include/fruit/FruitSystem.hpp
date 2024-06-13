@@ -7,12 +7,12 @@
 class FruitSystem : public Util::GameObject {
 public:
 
-    explicit FruitSystem(const glm::vec2 &Position) {
+    explicit FruitSystem(const glm::vec2 &Position, const glm::vec2 cherryPosition) {
         m_Transform.translation = Position;
         m_Drawable = std::make_shared<Util::Image>(RESOURCE_DIR"/Image/Character/Fruit/cherry.png");
 
         cherry = std::make_shared<Fruit>(RESOURCE_DIR"/Image/Character/Fruit/cherry.png");
-        cherry->SetPosition({ -8.0f, 8.0f });
+        cherry->SetPosition(cherryPosition);
         cherry->SetZIndex(25);
         cherry->SetVisible(false);
         this->AddChild(cherry);

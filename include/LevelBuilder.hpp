@@ -68,6 +68,14 @@ public:
         return positions;
     }
 
+    glm::vec2 getGhostRestartPosition() {
+        return glm::vec2{json["ghostRestartPosition"]["X"].get<float>(), json["ghostRestartPosition"]["Y"].get<float>()};
+    }
+
+    glm::vec2 getCherryPosition() {
+        return glm::vec2{json["cherryPosition"]["X"].get<float>(), json["cherryPosition"]["Y"].get<float>()};
+    }
+
     std::vector<std::vector<int>> getGhostBFSMap() {
         return json["ghostBFSMap"].get<std::vector<std::vector<int>>>();
     }
