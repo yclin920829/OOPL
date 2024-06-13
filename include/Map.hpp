@@ -208,6 +208,10 @@ public:
         return ghostRoads;
     }
 
+    const std::vector<std::vector<int>> &getGhostMap() const {
+        return ghostMap;
+    }
+
 private:
     double pixel = 16;
     std::vector<std::shared_ptr<Block>> ghostRoads;

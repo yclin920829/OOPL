@@ -29,7 +29,7 @@ void App::Start() {
     for (int i = 0; i < 4; i++) {
         ghosts.at(levelBuilder.getGhostNames().at(i)) = std::make_shared<Ghost>(
             levelBuilder.getGhostNames().at(i),
-            levelBuilder.getGhostBFSMap(),
+            map->getGhostMap(),
             levelBuilder.getGhostInitialPosition().at(i)
         );
         root.AddChild(ghosts.at(levelBuilder.getGhostNames().at(i)));
