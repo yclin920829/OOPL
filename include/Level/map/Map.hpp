@@ -42,7 +42,7 @@ public:
                 block->SetPosition({positionX, positionY});
                 this->AddChild(block);
 
-                if (0 == map_by_number[i][j] || 43 == map_by_number[i][j] || 52 == map_by_number[i][j]) { // beans
+                if (0 == map_by_number[i][j] || 43 == map_by_number[i][j]) { // beans
                     beansCounter += 1;
                     beans.push_back(block);
                     pacmanRoads.push_back(block);
@@ -220,6 +220,10 @@ public:
 
     const std::vector<std::vector<int>> &getGhostMap() const {
         return ghostMap;
+    }
+
+    void BeansMinus(){
+        beansCounter--;
     }
 
 private:

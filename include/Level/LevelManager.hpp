@@ -44,7 +44,7 @@ public:
 
 private:
 
-    int maxLevel = 20;
+    int maxLevel = 5;
     std::string nowPlayer;
     int nowLevel = 0;
     std::shared_ptr<Level> NowLevel;

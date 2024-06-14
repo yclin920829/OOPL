@@ -93,6 +93,16 @@ public:
 
     int Update() {
 
+        if (Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
+            if (debugMode) {
+                LOG_DEBUG("Debug mode");
+                debugMode = false;
+            } else {
+                LOG_DEBUG("Normal mode");
+                debugMode = true;
+            }
+        }
+
         std::function<void()> pacmanMove = [&]() {
             if (Util::Input::IsKeyDown(Util::Keycode::UP)) {
                 pacman->setNextDirection(Pacman::Direction::up);
@@ -158,6 +168,8 @@ public:
             for (const std::shared_ptr<Block> &bean: map->GetSmallBeans()) {
                 if (pacman->eatBean(bean) && bean->GetVisibility()) {
                     bean->SetVisible(false);
+                    map->BeansMinus();
+//                    LOG_DEBUG("{}", map->GetBeansNumber());
                     if (bean->GetCodeNumber() == 0) {
                         pacman->HandleScoreUpCollision();
                     } else if (bean->GetCodeNumber() == 43) {
@@ -205,7 +217,7 @@ public:
         std::function<void()> pacmanCollidesGhosts = [&]() {
             for (auto &ghost: ghosts) {
                 if (!pacman->IsDead() && pacman->IsCollides(ghost.second)) {
-                    if (ghost.second->GetState() == "Normal") {
+                    if (ghost.second->GetState() == "Normal" && !debugMode) {
                         pacman->Dead();
                     } else if (ghost.second->GetState() == "Vulnerable") {
                         ghost.second->Dead();
@@ -575,6 +587,7 @@ private:
 
     std::shared_ptr<Pacman> pacman;
 
+    bool debugMode = false;
 
     std::vector<std::string> VulnerableGhostsImages;
 
