@@ -4,7 +4,9 @@
 #include "event/EventManager.hpp"
 #include "event/EventType.hpp"
 #include "Util/GameObject.hpp"
-#include "life/Life.hpp"
+#include "Util/Logger.hpp"
+#include "Life.hpp"
+#include "App.hpp"
 
 class LifeSystem : public Util::GameObject {
 public:

@@ -2,7 +2,8 @@
 #define REPLACE_WITH_YOUR_PROJECT_NAME_SCORE_HPP
 
 #include "Util/GameObject.hpp"
-#include "score/Number.hpp"
+#include "Util/Image.hpp"
+#include "Number.hpp"
 #include <vector>
 
 class Score : public Util::GameObject {
@@ -26,6 +27,7 @@ public:
 
     void SetScore(int score){
         std::vector<int> nums(5, 0);
+        nowScore = score;
 
         for (int i = 4; i >= 0 && score > 0; i--) {
             nums[i] = score % 10;
@@ -34,8 +36,13 @@ public:
         }
     };
 
+    int GetScore(){
+        return nowScore;
+    }
+
 private:
     std::vector<std::shared_ptr<Number>> digits;
+    int nowScore = 0;
 };
 
 #endif //REPLACE_WITH_YOUR_PROJECT_NAME_SCORE_HPP

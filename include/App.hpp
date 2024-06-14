@@ -1,21 +1,24 @@
 #ifndef APP_HPP
 #define APP_HPP
 
-#include "Pacman.hpp"
-#include "ghost/Ghost.hpp"
-#include "life/LifeSystem.hpp"
-#include "fruit/FruitSystem.hpp"
-#include "score/ScoreSystem.hpp"
+#include "Level/Character/Pacman.hpp"
+#include "Level/ghost/Ghost.hpp"
+#include "Level/life/LifeSystem.hpp"
+#include "Level/fruit/FruitSystem.hpp"
+#include "Level/score/ScoreSystem.hpp"
+#include "Level/LevelManager.hpp"
+#include "UI/UISystem.hpp"
 
 #include "Util/Renderer.hpp"
-#include "Map.hpp"
+#include "Level/map/Map.hpp"
 #include "LevelBuilder.hpp"
 
 class App {
 public:
     enum class State {
-        START,
-        UPDATE,
+        UI,//起始UI介面或返回後的UI(會一直更新直到切換)
+        START,//遊戲地圖載入或切換地圖
+        UPDATE,//處理遊戲過程(正常要回到UI才會到END)
         END,
     };
 
@@ -23,7 +26,10 @@ public:
 
     void Start();
 
+    void UIUpdate();
+
     void Update();
+
 
     void End(); // NOLINT(readability-convert-member-functions-to-static)
 
@@ -32,37 +38,17 @@ private:
 
 private:
   
-    State m_CurrentState = State::START;
+    State m_CurrentState = State::UI;
 
     Util::Renderer root;
 
-    std::shared_ptr<Map> map;
+//
+    std::shared_ptr<UISystem> NowUI;
+    bool IsBackFromGame = true;
+    int nowLevel = 1;
+    std::string playerID = "player001";
+    std::shared_ptr<LevelManager> levelManager;
 
-    std::shared_ptr<LifeSystem> lifeSystem;
-    std::shared_ptr<ScoreSystem> scoreSystem;
-    std::shared_ptr<FruitSystem> fruitSystem;
-    EventManager * eventManager = new EventManager();
-
-    std::shared_ptr<Ghost> blinky;
-    std::shared_ptr<Ghost> pinky;
-    std::shared_ptr<Ghost> inky;
-    std::shared_ptr<Ghost> clyde;
-
-    std::map<std::string, std::shared_ptr<Ghost>> ghosts ={
-        {"blinky",blinky},
-        {"pinky",pinky},
-        {"inky",inky},
-        {"clyde",clyde}
-    };
-
-    std::shared_ptr<Pacman> pacman;
-
-
-    std::vector<std::string> VulnerableGhostsImages;
-
-    int time = 0;
-
-    LevelBuilder levelBuilder;
 };
 
 #endif

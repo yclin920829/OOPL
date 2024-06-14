@@ -43,6 +43,12 @@ public:
                 this->AddChild(block);
 
                 if (0 == map_by_number[i][j] || 43 == map_by_number[i][j] || 52 == map_by_number[i][j]) { // beans
+                    beansCounter += 1;
+                    beans.push_back(block);
+                    pacmanRoads.push_back(block);
+                    ghostRoads.push_back(block);
+                    row.push_back(1);
+                } else if (52 == map_by_number[i][j]) {
                     beans.push_back(block);
                     pacmanRoads.push_back(block);
                     ghostRoads.push_back(block);
@@ -208,6 +214,10 @@ public:
         return ghostRoads;
     }
 
+    int GetBeansNumber(){
+        return beansCounter;
+    };
+
     const std::vector<std::vector<int>> &getGhostMap() const {
         return ghostMap;
     }
@@ -220,6 +230,8 @@ private:
 
     std::vector<std::vector<int>> ghostMap;
     std::vector<std::vector<std::shared_ptr<Block>>> printMap;
+
+    int beansCounter = 0;
 
     std::map<int, std::string> Mapper{
         {0,  "small_ball"},

@@ -41,6 +41,14 @@ public:
 
     }
 
+    void SetHighestScore(int score){
+        HighestScore ->SetScore(score);
+    }
+
+    int GetHighestScore(){
+        return HighestScore -> GetScore();
+    }
+
     void ClearScore(){
         this -> nowScore = 0;
         if(this -> highestScore != 0){
