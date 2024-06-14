@@ -29,14 +29,10 @@ public:
 
     int Update(){
         int nowState = NowLevel -> Update();
-        if(nowState != 3){
-            return nowState;
+        if(nowLevel == maxLevel && nowState == 3) {
+            return 4;//代表回主頁面且關卡重整至1
         }
-        if(nowLevel == maxLevel){
-            return 2;
-        }else{
-            NextLevel();
-        }
+        return nowState;// 1:直接關視窗、2.按ESC回主頁面、3.關卡吃完豆子
     }
 
 
