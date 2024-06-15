@@ -107,7 +107,7 @@ public:
     }
 
     void move() {
-        std::this_thread::sleep_for(std::chrono::milliseconds((125 / 8)));
+        std::this_thread::sleep_for(std::chrono::milliseconds(15));
         if (road.size() < 2) {
             road.clear();
             return;
