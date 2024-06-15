@@ -95,10 +95,8 @@ public:
 
         if (Util::Input::IsKeyDown(Util::Keycode::SPACE)) {
             if (debugMode) {
-                LOG_DEBUG("Debug mode");
                 debugMode = false;
             } else {
-                LOG_DEBUG("Normal mode");
                 debugMode = true;
             }
         }
